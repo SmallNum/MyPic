@@ -1,0 +1,18 @@
+【状态信息】
+・「状态码」：http_200
+・「状态描述」：请求成功
+・「原状态信息」：-
+・「详情可查看」：-
+
+【神策系统信息】
+・「请求下游地址」：-
+・「请求下游信息」：-
+・「通道 ID」：27
+・「神策消息 ID」：963ca474-15ea-4295-887e-66855e6e059d
+・「下游厂商消息 ID」：-
+
+【内部信息】
+{"$sf_channel_service_name":{"dataType":"STRING","stringValue":"WEBHOOK"},"$sf_msg_content":{"dataType":"STRING","stringValue":"{\"select_system_label\":\"third_tag_sc_1_1718958809581\"}"},"test_log":""}
+
+【操作建议】
+暂无
