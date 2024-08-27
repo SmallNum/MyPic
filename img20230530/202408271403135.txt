@@ -1,0 +1,66 @@
+{ - 
+  "took": 2,
+  "timed_out": false,
+  "_shards": { - 
+    "total": 32,
+    "successful": 32,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": { - 
+    "total": 5,
+    "max_score": 1,
+    "hits": [ - 
+      { - 
+        "_index": "dp_vender_third_tag_24071915_1",
+        "_type": "data_portrait",
+        "_id": "70121_232",
+        "_score": 1,
+        "_source": { - 
+          "third_tag_sc_70121_1721743957493": 1,
+          "data_id": "70121_232"
+        }
+      },
+      { - 
+        "_index": "dp_vender_third_tag_24071915_2",
+        "_type": "data_portrait",
+        "_id": "70121_602702625",
+        "_score": 1,
+        "_source": { - 
+          "third_tag_sc_70121_1721743957493": 1,
+          "data_id": "70121_602702625"
+        }
+      },
+      { - 
+        "_index": "dp_vender_third_tag_24071915_1",
+        "_type": "data_portrait",
+        "_id": "70121_88297699",
+        "_score": 1,
+        "_source": { - 
+          "third_tag_sc_70121_1721743957493": 1,
+          "data_id": "70121_88297699"
+        }
+      },
+      { - 
+        "_index": "dp_vender_third_tag_24071915_2",
+        "_type": "data_portrait",
+        "_id": "70121_619560472",
+        "_score": 1,
+        "_source": { - 
+          "third_tag_sc_70121_1721743957493": 1,
+          "data_id": "70121_619560472"
+        }
+      },
+      { - 
+        "_index": "dp_vender_third_tag_24071915_2",
+        "_type": "data_portrait",
+        "_id": "70121_1",
+        "_score": 1,
+        "_source": { - 
+          "third_tag_sc_70121_1721743957493": 1,
+          "data_id": "70121_1"
+        }
+      }
+    ]
+  }
+}
