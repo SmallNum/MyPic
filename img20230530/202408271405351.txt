@@ -1,0 +1,103 @@
+[
+        {
+            "params": {
+                "select_system_label": "third_tag_sc_70121_1721743957493"
+            },
+            "project_name": "default",
+            "receipt_properties": {
+                "sf_channel_category": "WEBHOOK",
+                "sf_channel_id": 34,
+                "sf_enter_plan_time": 1723977539837,
+                "sf_msg_id": "bc04dbf2-7bd9-4b82-a5e1-59a01f277968",
+                "sf_plan_id": -1,
+                "sf_plan_strategy_id": -1,
+                "sf_plan_type": "运营计划",
+                "sf_strategy_unit_id": -1
+            },
+            "send_id": "232",
+            "sf_version": "4.0",
+            "user_profile": {
+                "user_id": -1
+            }
+        },{
+            "params": {
+                "select_system_label": "third_tag_sc_70121_1721743957493"
+            },
+            "project_name": "default",
+            "receipt_properties": {
+                "sf_channel_category": "WEBHOOK",
+                "sf_channel_id": 34,
+                "sf_enter_plan_time": 1723977539837,
+                "sf_msg_id": "bc04dbf2-7bd9-4b82-a5e1-59a01f277968",
+                "sf_plan_id": -1,
+                "sf_plan_strategy_id": -1,
+                "sf_plan_type": "运营计划",
+                "sf_strategy_unit_id": -1
+            },
+            "send_id": "602702625",
+            "sf_version": "4.0",
+            "user_profile": {
+                "user_id": -1
+            }
+        },{
+            "params": {
+                "select_system_label": "third_tag_sc_70121_1721743957493"
+            },
+            "project_name": "default",
+            "receipt_properties": {
+                "sf_channel_category": "WEBHOOK",
+                "sf_channel_id": 34,
+                "sf_enter_plan_time": 1723977539837,
+                "sf_msg_id": "bc04dbf2-7bd9-4b82-a5e1-59a01f277968",
+                "sf_plan_id": -1,
+                "sf_plan_strategy_id": -1,
+                "sf_plan_type": "运营计划",
+                "sf_strategy_unit_id": -1
+            },
+            "send_id": "88297699",
+            "sf_version": "4.0",
+            "user_profile": {
+                "user_id": -1
+            }
+        },{
+            "params": {
+                "select_system_label": "third_tag_sc_70121_1721743957493"
+            },
+            "project_name": "default",
+            "receipt_properties": {
+                "sf_channel_category": "WEBHOOK",
+                "sf_channel_id": 34,
+                "sf_enter_plan_time": 1723977539837,
+                "sf_msg_id": "bc04dbf2-7bd9-4b82-a5e1-59a01f277968",
+                "sf_plan_id": -1,
+                "sf_plan_strategy_id": -1,
+                "sf_plan_type": "运营计划",
+                "sf_strategy_unit_id": -1
+            },
+            "send_id": "619560472",
+            "sf_version": "4.0",
+            "user_profile": {
+                "user_id": -1
+            }
+        },{
+            "params": {
+                "select_system_label": "third_tag_sc_70121_1721743957493"
+            },
+            "project_name": "default",
+            "receipt_properties": {
+                "sf_channel_category": "WEBHOOK",
+                "sf_channel_id": 34,
+                "sf_enter_plan_time": 1723977539837,
+                "sf_msg_id": "bc04dbf2-7bd9-4b82-a5e1-59a01f277968",
+                "sf_plan_id": -1,
+                "sf_plan_strategy_id": -1,
+                "sf_plan_type": "运营计划",
+                "sf_strategy_unit_id": -1
+            },
+            "send_id": "1",
+            "sf_version": "4.0",
+            "user_profile": {
+                "user_id": -1
+            }
+        }
+    ]
