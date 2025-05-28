@@ -1,0 +1,11 @@
+paid_coupon.log:145:[WARN ] 2024-05-10 16:28:53.347 [DubboServerHandler-10.30.241.209:20880-thread-159] [com.dmall.pointmall.service.paidcoupon.impl.PaidCouponCommonServiceImpl#refundPaidCouponByCouponCode@545] [317e11eb67b3b534] - PaidCouponCommonServiceImpl-refundPaidCouponByCouponCode-orderId=20001044600256244,couponCodeList=["SJXJ100442405000000000035"]
+paid_coupon.log:146:[WARN ] 2024-05-10 16:28:53.632 [DubboServerHandler-10.30.241.209:20880-thread-159] [com.dmall.pointmall.service.paidcoupon.impl.PaidCouponCommonServiceImpl#orderCoupon@400] [317e11eb67b3b534] - orderCoupon dmallOrderId  20001044600256244 userId 99313244 packageCode QB202405103  last saleAmount 20.00 update sub 20
+paid_coupon.log:147:[WARN ] 2024-05-10 16:28:53.664 [DubboServerHandler-10.30.241.209:20880-thread-159] [com.dmall.pointmall.service.paidcoupon.impl.PaidCouponCommonServiceImpl#orderCoupon@400] [317e11eb67b3b534] - orderCoupon dmallOrderId  20001044600256244 userId 99313244 packageCode QB202405104  last saleAmount 20.00 update sub 20
+paid_coupon.log:148:[ERROR] 2024-05-10 16:28:53.666 [DubboServerHandler-10.30.241.209:20880-thread-159] [com.dmall.pointmall.service.dubbo.impl.PaidCouponOpenDubboServiceImpl#refundPaidCouponByCouponCode@357] [317e11eb67b3b534] - PaidCouponOpenDubboServiceImpl refundPaidCouponByCouponCode Exception orderId 20001044600256244
+paid_coupon.log-149-java.lang.NullPointerException: null
+paid_coupon.log-150-    at com.dmall.pointmall.service.paidcoupon.impl.PaidCouponCommonServiceImpl.refundPaidCouponByCouponCode(PaidCouponCommonServiceImpl.java:595)
+
+
+
+PaidCouponCommonServiceImpl-refundPaidCouponByCouponCode-orderId=20001044600256244,couponCodeList=["SJXJ100442405000000000035"]
+paid_coupon.log:146:[WARN ] 2024-05-10 16:28:53.632 [DubboServerHandler-10.30.241.209:20880-thread-159] 
