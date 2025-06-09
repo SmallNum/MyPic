@@ -1,0 +1,20 @@
+--
+898896:[INFO ] 2023-12-26 14:34:28.783 [pool-12-thread-9] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:1424656032,currentId:1512376002
+--
+899592:[INFO ] 2023-12-26 14:34:28.832 [pool-12-thread-6] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:890410020,currentId:978370082
+--
+982021:[INFO ] 2023-12-26 14:34:34.625 [pool-12-thread-10] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:1602738036,currentId:1690258002
+--
+1040097:[INFO ] 2023-12-26 14:34:38.809 [pool-12-thread-7] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:1068492024,currentId:1156332002
+--
+1257921:[INFO ] 2023-12-26 14:34:54.159 [pool-12-thread-4] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:534246012,currentId:624886842
+--
+1336384:[INFO ] 2023-12-26 14:34:59.659 [pool-12-thread-6] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:890410020,currentId:978410082
+--
+1371724:[INFO ] 2023-12-26 14:35:02.137 [pool-12-thread-3] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:356164008,currentId:446884962
+--
+1426422:[INFO ] 2023-12-26 14:35:06.045 [pool-12-thread-5] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:712328016,currentId:803009082
+--
+1443409:[INFO ] 2023-12-26 14:35:07.234 [pool-12-thread-9] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:1424656032,currentId:1512416002
+--
+1470945:[INFO ] 2023-12-26 14:35:09.170 [pool-12-thread-8] [com.dmal.pay.member.bill.worker.MemberBillCreateByVendorConfigJob] [] - [] - MemberBillCreateByVendorConfigJob ReadDataTask startId:1246574028,currentId:1334894002
