@@ -1,0 +1,42 @@
+# 1、验证的信息
+
+张冰涛：15927121063  + 1149279（ERP ID ）  + 00390327 （工号）
+
+# 2、接口调用
+vmtool -x 3 --action getInstances --className com.dmall.market.service.impl.rpc.HrsUserServiceImpl  --express 'instances[0].getmktUserId("00390327",1L)' 
+
+# 3、查询日志
+grep -n -0 'getmktUserId'  man.log --color=auto
+
+8563:[INFO ] 2024-06-24 16:54:41.423 [arthas-command-execute] [com.dmall.market.service.impl.rpc.HrsUserServiceImpl#getmktUserId@37] [] - HrsUserServiceImpl-getmktUserId--param={"userNo":"00390327","venderId":1}
+--
+8565:[INFO ] 2024-06-24 16:54:41.500 [arthas-command-execute] [com.dmall.market.service.impl.rpc.HrsUserServiceImpl#getmktUserId@39] [] - HrsUserServiceImpl-getmktUserId--result={"code":"0000","data":{"accountId":1149279,"birthday":"1986-12-25","companyId":1,"createBy":"sap","createNo":"sap","created":"2021-06-28T17:08:33","dmallId":"bingtao.zhang","email":"bingtao.zhang@dmall.com","employStatus":1,"employd":"2019-07-03T00:00:00","extNo":"11146","gender":1,"id":595841,"isSap":5,"lowerLevelUserDtoList":[],"mobile":"10027121063","modified":"2023-07-08T01:10:03","operateResource":2,"orgId":199281,"orgName":"移动运营研发部-移动研发组-综合业务研发组","orgNamePath":"多点新鲜有限公司/技术中心/移动运营研发部/移动运营研发部-移动研发组/移动运营研发部-移动研发组-综合业务研发组","orgNo":"50538863","postAndDutyList":[{"created":"2023-07-08 01:10:07.0","dutyId":61521,"dutyName":"前端工程师","dutyNo":"1442","stdDutyCode":"","type":0,"userId":595841}],"rankName":"T7","rankNo":"T7","updateBy":"sap","updateNo":"sap","userExt":{"firstWorkDay":"2009-07-01","city":"武汉市","cardType":1.0,"idNum":"429004198612250034"},"userName":"张冰涛","userNo":"00390327","userTreeList":[],"userType":"A1","venderId":1,"venderName":"多点","venderType":"1","yn":1},"message":"成功","success":true}
+
+
+# 4、
+1149279 对应接口返回：accountId（地推这边叫地推员 ID ）
+00390327 对应接口返回：userNo （地推这边叫 sapUserId，或者工号）
+
+# 5、查询 ERP 的接口：（接口里对应的字段是：badgeNo、00390327 ）
+vmtool -x 3 --action getInstances --className com.dmall.market.service.impl.rpc.ErpUserServiceImpl  --express 'instances[0].getByErpUserId(1149279L)' 
+
+[INFO ] 2024-06-25 11:21:36.710 [arthas-command-execute] [com.dmall.market.service.impl.rpc.ErpUserServiceImpl#getByErpUserId@333] [] - [getByErpUserId.result] dubboResult={"result":"操作成功!","code":"0000","data":{"idCard":"429004198612250034","venderId":1,"wageAgreement":0,"id":1149279,"badgeNo":"00390327","mobile":"15927121063","storeId":6,"userName":"张冰涛"},"sys":1},erpUserId=1149279
+
+# 6、新的 HRS  的接口 （不带商家参数）
+
+[arthas@1]$ vmtool -x 3 --action getInstances --className com.dmall.market.service.impl.rpc.HrsUserServiceImpl  --express 'instances[0].getmktUserNo(1149279L,0L)' 
+@String[00390327]
+[arthas@1]$ 
+
+
+[INFO ] 2024-06-25 20:04:04.175 [arthas-command-execute] [com.dmall.market.service.impl.rpc.HrsUserServiceImpl#getmktUserNo@63] [] - HrsUserServiceImpl-getmktUserNo--param={"accountIds":[1149279]}
+[DEBUG] 2024-06-25 20:04:04.190 [DubboClientHandler-10.27.185.93:20880-thread-3] [org.apache.dubbo.remoting.transport.DecodeHandler#decode@59] [] -  [DUBBO] Decode decodeable message org.apache.dubbo.rpc.protocol.dubbo.DecodeableRpcResult, dubbo version: 2.8.9-RELEASE, current host: 10.30.250.55
+[INFO ] 2024-06-25 20:04:04.191 [arthas-command-execute] [com.dmall.market.service.impl.rpc.HrsUserServiceImpl#getmktUserNo@65] [] - HrsUserServiceImpl-getmktUserNo--result={"code":"0000","data":[{"accountId":1149279,"area":"A010","companyId":2,"created":"2019-12-04T10:45:42","employStatus":1,"extNo":"1","gender":1,"id":167532,"isSap":0,"lowerLevelUserDtoList":[],"mobile":"15927121063","modified":"2024-05-31T10:51:46","operateResource":0,"orgId":121836,"orgName":"杂货部","orgNamePath":"物美集团/北京超市事业部/京津店铺/S通燕顺区/西门店/杂货部","orgNo":"50430440","orgSuperIds":"120432,120429,122106,116184,124901,121836","pinyin":"zhangbingtao","postAndDutyList":[{"created":"2023-04-23 20:31:01.0","postId":265001,"postName":"便利店员","postNo":"1000001","type":0,"userId":167532}],"rankName":"T3-2","rankNo":"T3-2","updateBy":"HRS公用测试账号","updateNo":"2266761","userName":"张冰涛","userNo":"00390327","userTreeList":[],"userType":"B1","venderId":2,"venderMainType":2,"venderName":"北京物美","venderType":"5","yn":1},{"accountId":1149279,"birthday":"1986-12-25","companyId":1,"createBy":"sap","createNo":"sap","created":"2021-06-28T17:08:33","dmallId":"bingtao.zhang","email":"bingtao.zhang@dmall.com","employStatus":1,"employd":"2019-07-03T00:00:00","extNo":"11146","gender":1,"id":595841,"isSap":5,"lowerLevelUserDtoList":[],"mobile":"10027121063","modified":"2023-07-08T01:10:03","operateResource":2,"orgId":199281,"orgName":"移动运营研发部-移动研发组-综合业务研发组","orgNamePath":"多点新鲜有限公司/技术中心/移动运营研发部/移动运营研发部-移动研发组/移动运营研发部-移动研发组-综合业务研发组","orgNo":"50538863","orgSuperIds":"193641,281001,194001,195641,199281","postAndDutyList":[{"created":"2023-07-08 01:10:07.0","dutyId":61521,"dutyName":"前端工程师","dutyNo":"1442","stdDutyCode":"","type":0,"userId":595841}],"rankName":"T7","rankNo":"T7","updateBy":"sap","updateNo":"sap","userName":"张冰涛","userNo":"00390327","userTreeList":[],"userType":"A1","venderId":1,"venderName":"多点","venderType":"1","yn":1}],"message":"成功","success":true}
+
+
+# 7、新的 HRS  的接口 （带商家参数）
+sc  -d com.dm.hrs.api.domain.param.UserByAccountParam
+
+vmtool -x 3 --action getInstances --className com.dm.hrs.api.dubbo.UserDubboService  --express 'instances[0].searchUserInfoByAccount(@com.alibaba.fastjson.JSON@parseObject("{\"accountIds\":[1149279],\"venderId\":1}",@com.dm.hrs.api.domain.param.UserByAccountParam@class))'  -c 72d5443c
+
+# END
