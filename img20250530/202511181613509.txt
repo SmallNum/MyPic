@@ -1,0 +1,114 @@
+
+# 1、数据库异常日志
+数据保存失败日志：字段长度不够
+```
+[ERROR] 2023-03-18 19:59:02.681 [MQ_NOTICE_LOG_INoticeAchievementHandler_2] [com.dmall.market.service.impl.UserAchievementExtServiceImpl] [] - 保存数据失败
+org.springframework.dao.DataIntegrityViolationException: 
+### Error updating database.  Cause: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'user_phone' at row 1
+### The error may involve com.dmall.market.dao.mappers.primary.UserAchievementExtMapper.insert-Inline
+### The error occurred while setting parameters
+### SQL: INSERT INTO user_achievement_ext  ( user_id, user_phone, metric, metric_name, metric_time, mkt_user_id, mkt_user_name, mkt_user_phone, mkt_vender_id, mkt_vender_name, mkt_store_id, mkt_store_name, original_id, metric_date, trigger_key, event_id, yn, created, modified )  VALUES  ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+### Cause: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'user_phone' at row 1
+; Data truncation: Data too long for column 'user_phone' at row 1; nested exception is com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'user_phone' at row 1
+        at org.springframework.jdbc.support.SQLStateSQLExceptionTranslator.doTranslate(SQLStateSQLExceptionTranslator.java:104)
+        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:72)
+        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+        at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:73)
+        at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:446)
+        at com.sun.proxy.$Proxy95.insert(Unknown Source)
+        at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:278)
+        at com.baomidou.mybatisplus.core.override.PageMapperMethod.execute(PageMapperMethod.java:68)
+        at com.baomidou.mybatisplus.core.override.PageMapperProxy.invoke(PageMapperProxy.java:64)
+        at com.sun.proxy.$Proxy111.insert(Unknown Source)
+        at com.baomidou.mybatisplus.extension.service.impl.ServiceImpl.save(ServiceImpl.java:108)
+        at com.dmall.market.service.impl.BaseServiceImpl.saveIgnoreDuplicateKey(BaseServiceImpl.java:41)
+        at com.dmall.market.service.impl.BaseServiceImpl$$FastClassBySpringCGLIB$$83062a5e.invoke(<generated>)
+        at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+        at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:684)
+        at com.dmall.market.service.impl.UserAchievementExtServiceImpl$$EnhancerBySpringCGLIB$$bd95cc27.saveIgnoreDuplicateKey(<generated>)
+        at com.dmall.market.job.mq.notice.achievement.UserAchievementExt2NoticeAchievementHandler.saveExt(UserAchievementExt2NoticeAchievementHandler.java:63)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+        at java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:193)
+        at java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:175)
+        at java.util.Iterator.forEachRemaining(Iterator.java:116)
+        at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+        at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:482)
+        at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:472)
+        at java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+        at java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+        at java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+        at java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:485)
+        at com.dmall.market.job.mq.notice.achievement.UserAchievementExt2NoticeAchievementHandler.process(UserAchievementExt2NoticeAchievementHandler.java:59)
+        at com.dmall.market.job.mq.notice.BaseNoticeService.warp(BaseNoticeService.java:103)
+        at com.dmall.market.job.mq.notice.BaseNoticeService.lambda$null$3(BaseNoticeService.java:172)
+        at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1640)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+Caused by: com.mysql.jdbc.MysqlDataTruncation: Data truncation: Data too long for column 'user_phone' at row 1
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3976)
+        at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3914)
+        at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2530)
+        at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2683)
+        at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2495)
+        at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1903)
+        at com.mysql.jdbc.PreparedStatement.execute$original$jqMPkAaW(PreparedStatement.java:1242)
+        at com.mysql.jdbc.PreparedStatement.execute$original$jqMPkAaW$accessor$4WcOKXIu(PreparedStatement.java)
+        at com.mysql.jdbc.PreparedStatement$auxiliary$khfQzBlg.call(Unknown Source)
+        at org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:92)
+        at com.mysql.jdbc.PreparedStatement.execute(PreparedStatement.java)
+        at com.alibaba.druid.filter.FilterChainImpl.preparedStatement_execute(FilterChainImpl.java:3409)
+        at com.alibaba.druid.filter.FilterEventAdapter.preparedStatement_execute(FilterEventAdapter.java:440)
+        at com.alibaba.druid.filter.FilterChainImpl.preparedStatement_execute(FilterChainImpl.java:3407)
+        at com.alibaba.druid.proxy.jdbc.PreparedStatementProxyImpl.execute(PreparedStatementProxyImpl.java:167)
+        at com.alibaba.druid.pool.DruidPooledPreparedStatement.execute(DruidPooledPreparedStatement.java:498)
+        at org.apache.ibatis.executor.statement.PreparedStatementHandler.update(PreparedStatementHandler.java:46)
+        at org.apache.ibatis.executor.statement.RoutingStatementHandler.update(RoutingStatementHandler.java:74)
+        at sun.reflect.GeneratedMethodAccessor658.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:498)
+        at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:63)
+        at com.sun.proxy.$Proxy140.update(Unknown Source)
+        at org.apache.ibatis.executor.SimpleExecutor.doUpdate(SimpleExecutor.java:50)
+        at org.apache.ibatis.executor.BaseExecutor.update(BaseExecutor.java:117)
+        at org.apache.ibatis.executor.CachingExecutor.update(CachingExecutor.java:76)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.update(DefaultSqlSession.java:198)
+        at org.apache.ibatis.session.defaults.DefaultSqlSession.insert(DefaultSqlSession.java:185)
+        at sun.reflect.GeneratedMethodAccessor656.invoke(Unknown Source)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:498)
+        at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:433)
+        ... 30 common frames omitted
+		
+```
+
+# 2、搜索异常日志上下文+其他信息
+
+```
+1、查询日志
+grep -n -2 '处理通知MQ异常' market-job-mq.log --color=auto
+
+2、确定单一日志（这个会被打印19遍，无语）
+grep -n -0 '6ac4b72c71437d83' market-job-mq.log --color=auto
+
+[root@dmall-market-plus-job-gz01a-blue-6c975f77dc-nrjkw 10.28.21.214:8080]# grep -n -0 '6ac4b72c71437d83' market-job-mq.log --color=auto
+1366726:[ERROR] 2023-03-18 19:42:42.503 [ConsumeMessageThread_4] [com.dmall.market.job.mq.NoticeRocketMessageHandler] [6ac4b72c71437d83] - 处理通知MQ异常:[{"delayTimeLevel":0,"dyeFlag":"blue","headers":{"_APPCODE":"market-job","dmall_chain_flag":"blue","_PROCODE":"dmall-market-plus","dmall_chain_type":"true","_ZONE":"gz01","_IP":"10.28.21.214"},"key":"626902025","message":"808370081","messageId":"0A1C15D600014D9209FE5794DD8A6441","offset":51,"queueId":0,"reconsumeTimes":5,"refererAppCode":"market-job","refererIp":"10.28.21.214","refererProCode":"dmall-market-plus","sentTimestamp":1679069373834,"storeId":"0A1C15D600014D9209FE5794DD8A6441","tags":"achievement","topic":"rkt_dmall_market_notice","zone":"gz01"},{"delayTimeLevel":0,"dyeFlag":"green","headers":{"_APPCODE":"market-job","dmall_chain_flag":"green","_PROCODE":"dmall-market-plus","dmall_chain_type":"true","_ZONE":"gz01","_IP":"10.31.100.205"},"key":"626902025","message":"808388281","messageId":"0A1F64CD000141161C6F5794EA6DC1B1","offset":52,"queueId":0,"reconsumeTimes":5,"refererAppCode":"market-job","refererIp":"10.31.100.205","refererProCode":"dmall-market-plus","sentTimestamp":1679069377133,"storeId":"0A1F64CD000141161C6F5794EA6DC1B1","tags":"achievement","topic":"rkt_dmall_market_notice","zone":"gz01"}]
+
+3、注意MQ的结构：
+key是用户ID，message 是表 user_achievement 的ID 
+"key":"626902025","message":"808388281"
+
+4、查询验证数据信息
+SELECT * FROM `user_achievement_5`
+WHERE `user_id` = 626902025
+ORDER BY `id` DESC 
+LIMIT 20;
+
+5、查询异常日志的总数
+grep -n -0 'Could not get a resource from the pool' medusa-api.log.2022-11-08 --color=auto | wc -l
+
+# END
+```
+
+# END
