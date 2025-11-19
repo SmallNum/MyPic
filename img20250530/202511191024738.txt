@@ -1,0 +1,22 @@
+-- 根据商品查询 
+[INFO ] 2023-04-17 11:19:29.548 [ForkJoinPool.commonPool-worker-0] [com.dmall.medusa.service.sqlbuild.clickhouse.ClickhouseSqlBuilder] [] - ClickhouseSqlBuilder:conditionNodeOrHandler:condSql= b.user_id IN ( SELECT a.user_id FROM ch_ddw_medusa.light_events_local AS a  
+ WHERE 1=1 
+ AND a.event_code = 'page_view'  AND a.user_id IS NOT NULL and cutQueryString(page_url) = 'app://DMWareDetailPage' AND toString(a.vender_id) IN ('6222') AND  toString(a.sku_id)  =  '192596801'   and  toString(a.server_time)  >=  '2023-01-07 00:00:00'  AND toString(a.server_time)  <=  '2023-04-16 23:59:59'  AND a.dt >= '20230107' AND a.dt <= '20230417' group by a.user_id having count(1)  >= 1) 
+[INFO ] 2023-04-17 11:19:29.548 [ForkJoinPool.commonPool-worker-0] [com.dmall.medusa.service.sqlbuild.clickhouse.ClickhouseSqlBuilder] [] - [ClickhouseSqlBuilder.buildSql.sql]解析出的SQL, sql=SELECT user_id  FROM 
+ch_ddw_medusa.vender_user_profile_view AS b
+ WHERE b.user_id IS NOT NULL 
+ AND b.phone > ''
+ AND b.vender_id = 6222
+ AND ( b.user_id IN ( SELECT a.user_id FROM ch_ddw_medusa.light_events_local AS a  
+ WHERE 1=1 
+ AND a.event_code = 'page_view'  AND a.user_id IS NOT NULL and cutQueryString(page_url) = 'app://DMWareDetailPage' AND toString(a.vender_id) IN ('6222') AND  toString(a.sku_id)  =  '192596801'   and  toString(a.server_time)  >=  '2023-01-07 00:00:00'  AND toString(a.server_time)  <=  '2023-04-16 23:59:59'  AND a.dt >= '20230107' AND a.dt <= '20230417' group by a.user_id having count(1)  >= 1) )
+ group by user_id
+[INFO ] 2023-04-17 11:19:29.548 [ForkJoinPool.commonPool-worker-0] [com.dmall.medusa.ddw.service.impl.DdwUserInfoServiceImpl] [] - preCalculateUserCount,dt:20230417,sql = select count(1) from (SELECT user_id  FROM 
+ch_ddw_medusa.vender_user_profile_view AS b
+ WHERE b.user_id IS NOT NULL 
+ AND b.phone > ''
+ AND b.vender_id = 6222
+ AND ( b.user_id IN ( SELECT a.user_id FROM ch_ddw_medusa.light_events_local AS a  
+ WHERE 1=1 
+ AND a.event_code = 'page_view'  AND a.user_id IS NOT NULL and cutQueryString(page_url) = 'app://DMWareDetailPage' AND toString(a.vender_id) IN ('6222') AND  toString(a.sku_id)  =  '192596801'   and  toString(a.server_time)  >=  '2023-01-07 00:00:00'  AND toString(a.server_time)  <=  '2023-04-16 23:59:59'  AND a.dt >= '20230107' AND a.dt <= '20230417' group by a.user_id having count(1)  >= 1) )
+ group by user_id) t
