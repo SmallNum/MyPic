@@ -1,0 +1,33 @@
+[arthas@1]$ watch com.dmall.task.center.service.facade.TaskCenterFacadeImpl exchange '{params,returnObj,throwExp}'  -n 5  -x 3 
+Press Q or Ctrl+C to abort.
+Affect(class count: 2 , method count: 4) cost in 2441 ms, listenerId: 1
+method=com.dmall.task.center.service.facade.TaskCenterFacadeImpl.exchange location=AtExit
+ts=2024-11-05 14:00:51.405; [cost=219.582155ms] result=@ArrayList[
+    @Object[][
+        @TaskCenterContext[
+            serialVersionUID=@Long[-3492442315356623660],
+            sysSource=null,
+            platform=@String[culture],
+            token=@String[19f0c49b-3f37-4156-9b40-48acb62bd71e],
+            sessionId=null,
+            clientTime=null,
+            userId=null,
+            deviceId=null,
+            clientIp=null,
+            $jacocoData=@boolean[][isEmpty=false;size=19],
+        ],
+        @Long[691178],
+        @String[151],
+        @Long[8841],
+        @String[],
+    ],
+    @ServiceResponse[
+        serialVersionUID=@Long[205458372771878503],
+        code=@String[3003],
+        msg=@String[(TASK2006)抱歉，兑换失败，请重新兑换～:[3003]抱歉，您的金币不足～],
+        result=null,
+        $jacocoData=@boolean[][
+        ],
+    ],
+    null,
+]
