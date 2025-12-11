@@ -1,0 +1,22 @@
+1、
+前端请求： 
+https://testmagpie-partner.dmall-os.cn/man/task/listCoupon?currentPage=1&pageSize=50&vendorId=22401
+
+后端代码：
+com.dmall.magpie.man.controller.TaskController#listCoupon 
+
+最终调用优惠券的接口：
+com.dmall.coupon.daemon.hessian.api.ICouponApi#queryPageApplyInfo
+
+2、日志命令
+-- 根据这个得到 TID，然后查询 TID 
+grep -n -2 'queryCouponListByPage load config' magpie.log --color=auto
+
+3、出入参可见：
+接口：
+com.dmall.coupon.daemon.hessian.api.ICouponApi#queryPageApplyInfo 
+
+日志：
+magpie.log-69-[INFO ] 2024-12-25 10:40:11.750 [http-nio-8080-exec-5] [com.dmall.magpie.rpc.service.impl.CouponRpcServiceImpl#queryCouponListByPage@159] [f68a23a5bde9e28e] - queryCouponListByPage success,param={"coupType":5,"currentPage":1,"giveCouponSupplierBear":false,"giveUseSameStore":false,"pageSize":50,"provideType":202,"sipUserPermissions":false,"statusCodes":["16","8"],"userId":2738121},vendorId=22401,result={"code":"0000","data":{"applyInfoPageVos":[],"totalNum":0},"result":"success","systemCode":"COP0000"}
+
+END
