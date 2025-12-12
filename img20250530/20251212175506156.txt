@@ -1,0 +1,20 @@
+[INFO ] 2022-05-06 14:42:21.809 [DdwUserInfoService-pool-0] [com.dmall.medusa.ddw.service.impl.DdwUserInfoServiceImpl] [ceca9ec18b07cf81] - queryUserInfoBySql,groupId:187881,dt:20220506,sql = WITH temp AS (SELECT user_id  FROM 
+ads_data.user_profile AS b
+ WHERE b.user_id IS NOT NULL 
+ AND b.phone > ''
+ AND b.is_isolated != 1 AND ( CAST(b.main_vender_id AS string)  IN ('60')  )
+ AND ( b.user_id IN ( SELECT a.webuser_id FROM ddw_medusa.ads_dmall_order_ware AS a  
+ WHERE 1=1 
+ and !(a.order_status =128 AND a.cancel_reason_id =24) AND  CAST(a.trade_type AS string)  IN ('1')   and  CAST(a.order_create_time AS string)  >= '2021-10-01 00:00:00' AND  CAST(a.order_create_time AS string)  <= '2021-10-31 23:59:59'  AND a.dt >= '20211001' AND a.dt <= '20211031' group by a.webuser_id having count(*)  >= 1)  )
+ AND ( b.user_id NOT IN ( SELECT a.webuser_id FROM ddw_medusa.ads_dmall_order_ware AS a  
+ WHERE 1=1 
+ and !(a.order_status =128 AND a.cancel_reason_id =24) and  CAST(a.order_create_time AS string)  >= '2021-11-01 00:00:00' AND  CAST(a.order_create_time AS string)  <= '2021-12-31 23:59:59'  AND a.dt >= '20211101' AND a.dt <= '20211231' group by a.webuser_id having count(*)  > 0)  )
+ AND ( CAST(b.user_id AS string)  NOT IN ( SELECT CAST(user_id AS string) FROM dmall_medusa.user_info WHERE dt = '19700101' AND group_key  IN ('187601','187561','187361','187441','187321','187241','187841','187721')  ))
+ group by user_id) 
+
+            INSERT overwrite dmall_medusa.user_info(
+                user_id
+            ) PARTITION (dt='19700101', group_key='187881') [SHUFFLE]
+            SELECT
+                temp.user_id          AS user_id
+            FROM temp
