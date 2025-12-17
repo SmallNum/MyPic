@@ -1,0 +1,50 @@
+# 地推：联调问题跟进 
+
+# 1、接口调用参数信息
+``` 
+邓提供的任务 ID ： 2801 
+
+{
+  "vendorId": 22401,
+  "userId": 98723373,
+  "taskProperty": 3
+}
+
+``` 
+
+
+# 2、查询日志得到 TID ：1485929abdde60fe
+
+``` 
+
+grep -n -0 '1485929abdde60fe' market-api.log --color=auto
+
+
+ --   +  validTaskIdRes   +  
+[root@dmall-market-plus-job-gz01a-blue-764c884956-472lz 10.56.208.20:8080]# grep -n -0 '1485929abdde60fe' market-api.log --color=auto
+202044:[INFO ] 2024-12-24 17:13:24.529 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dubbo.MarketPlusRemoteServiceImpl#queryLastBindTrackInfo@119] [1485929abdde60fe] - queryLastBindMarketInfo trackRequest: {"taskProperty":3,"userId":98723373,"vendorId":22401}
+--
+202046:[INFO ] 2024-12-24 17:13:24.532 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dubbo.MarketPlusRemoteServiceImpl#queryLastBindTrackInfo@130] [1485929abdde60fe] - queryLastBindMarketInfo vendorId: 22401, taskProperty: 3, validTaskIdRes: {"code":"0000","data":[2521,2561,2761,2841],"msg":"success","success":true}
+202047:[DEBUG] 2024-12-24 17:13:24.532 [DubboServerHandler-10.56.208.20:20880-thread-199] [org.mybatis.spring.SqlSessionUtils#getSqlSession@97] [1485929abdde60fe] - Creating a new SqlSession
+202048:[DEBUG] 2024-12-24 17:13:24.533 [DubboServerHandler-10.56.208.20:20880-thread-199] [org.mybatis.spring.SqlSessionUtils#registerSessionHolder@148] [1485929abdde60fe] - SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4d3bedf5] was not registered for synchronization because synchronization is not active
+202049:[DEBUG] 2024-12-24 17:13:24.533 [DubboServerHandler-10.56.208.20:20880-thread-199] [org.mybatis.spring.transaction.SpringManagedTransaction#openConnection@87] [1485929abdde60fe] - JDBC Connection [com.alibaba.druid.proxy.jdbc.ConnectionProxyImpl@3f913111] will not be managed by Spring
+202050:[DEBUG] 2024-12-24 17:13:24.533 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dao.mappers.primary.UserScanRecordMapper.selectList#debug@159] [1485929abdde60fe] - ==>  Preparing: SELECT id,scan_minute,scan_time,uuid,tdc,user_id,bind_time,task_id,mkt_user_id,mkt_vender_id,mkt_store_id,expire_time,yn,created,modified FROM user_scan_record WHERE user_id = ? AND scan_time < ? AND bind_time < ? AND mkt_vender_id = ? AND task_id IN (?,?,?,?) AND expire_time > ? ORDER BY scan_time DESC limit 1 
+202051:[DEBUG] 2024-12-24 17:13:24.533 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dao.mappers.primary.UserScanRecordMapper.selectList#debug@159] [1485929abdde60fe] - ==> Parameters: 98723373(Long), 2024-12-24 17:13:24.532(Timestamp), 2024-12-24 17:13:24.532(Timestamp), 22401(Integer), 2521(Long), 2561(Long), 2761(Long), 2841(Long), 2024-12-24 17:13:24.532(Timestamp)
+202052:[DEBUG] 2024-12-24 17:13:24.534 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dao.mappers.primary.UserScanRecordMapper.selectList#debug@159] [1485929abdde60fe] - <==      Total: 0
+202053:[DEBUG] 2024-12-24 17:13:24.534 [DubboServerHandler-10.56.208.20:20880-thread-199] [org.mybatis.spring.SqlSessionUtils#closeSqlSession@191] [1485929abdde60fe] - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@4d3bedf5]
+202054:[INFO ] 2024-12-24 17:13:24.534 [DubboServerHandler-10.56.208.20:20880-thread-199] [com.dmall.market.dubbo.MarketPlusRemoteServiceImpl#queryLastBindTrackInfo@143] [1485929abdde60fe] - queryLastBindMarketInfo userId: 98723373, taskIds: [2521,2561,2761,2841], scanRecord: null
+[root@dmall-market-plus-job-gz01a-blue-764c884956-472lz 10.56.208.20:8080]# 
+
+
+``` 
+# 3、任务不存在，查询数据库发现，任务类型不对
+
+``` 
+-- 2801 和别的不一样 
+SELECT * FROM `employee_task`
+WHERE `id` IN (2521,2561,2761,2841,2801)
+LIMIT 20;
+
+```
+
+# END
