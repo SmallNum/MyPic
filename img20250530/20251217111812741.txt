@@ -1,0 +1,238 @@
+# 第一个：
+
+## 1、启动报错日志
+
+```plain
+[root@game-platform-exchange-man-gz01a-blue-68f9f6c8cc-bx4l6 logs]# more localhost.2023-02-17.log 
+17-Feb-2023 14:42:00.666 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+17-Feb-2023 14:42:00.860 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+17-Feb-2023 14:42:13.955 严重 [localhost-startStop-1] org.apache.catalina.core.StandardContext.listenerStart Exception sending context initialized event to listener instance of class [org.springframework.web.co
+ntext.ContextLoaderListener]
+        org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'com.dmall.aladdin.elf.sdk.AladdinConfig#0' defined in class path resource [spring-config.xml]: Invocation of init 
+method failed; nested exception is java.lang.NoClassDefFoundError: com/dmall/infra/common/DmallArchContext
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1628)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:555)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+                at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+                at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+                at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+                at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+                at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+                at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:867)
+                at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:543)
+                at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:443)
+                at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:325)
+                at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:107)
+                at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4699)
+                at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5165)
+                at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:150)
+                at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:743)
+                at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:719)
+                at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:714)
+                at org.apache.catalina.startup.HostConfig.deployDirectory(HostConfig.java:1125)
+                at org.apache.catalina.startup.HostConfig$DeployDirectory.run(HostConfig.java:1859)
+                at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+                at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+                at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+                at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+                at java.lang.Thread.run(Thread.java:750)
+        Caused by: java.lang.NoClassDefFoundError: com/dmall/infra/common/DmallArchContext
+                at org.apache.dubbo.rpc.cluster.loadbalance.AbstractLoadBalance.select(AbstractLoadBalance.java:84)
+                at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.doSelect(AbstractClusterInvoker.java:151)
+                at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.select(AbstractClusterInvoker.java:134)
+                at org.apache.dubbo.rpc.cluster.support.FailoverClusterInvoker.doInvoke(FailoverClusterInvoker.java:76)
+                at org.apache.dubbo.rpc.cluster.support.AbstractClusterInvoker.invoke(AbstractClusterInvoker.java:244)
+                at org.apache.dubbo.rpc.cluster.support.wrapper.MockClusterInvoker.invoke(MockClusterInvoker.java:76)
+                at org.apache.dubbo.rpc.proxy.InvokerInvocationHandler.invoke(InvokerInvocationHandler.java:112)
+                at org.apache.dubbo.common.bytecode.proxy7.getAllModuleConfig(proxy7.java)
+                at com.dmall.aladdin.elf.sdk.AladdinConfig.init(AladdinConfig.java:80)
+                at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+                at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                at java.lang.reflect.Method.invoke(Method.java:498)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeCustomInitMethod(AbstractAutowireCapableBeanFactory.java:1758)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1695)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1624)
+                ... 25 more
+        Caused by: java.lang.ClassNotFoundException: com.dmall.infra.common.DmallArchContext
+                at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1360)
+                at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1182)
+                ... 41 more
+17-Feb-2023 14:42:13.961 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log Closing Spring root WebApplicationContext
+```
+## 2、报错原因
+
+com.dmall.infra.common.DmallArchContext 实际位于 infra-common 包的 0.1.3 版本中
+
+![](https://raw.githubusercontent.com/SmallNum/MyPic/master/img20221110/202302271734117.png)
+
+
+
+而项目中引用的是：0.0.3，其实就是 JAR 包冲突。
+
+![](https://raw.githubusercontent.com/SmallNum/MyPic/master/img20221110/202302271735009.png)
+
+
+
+
+## 3、解决
+
+解决冲突，依赖正确的版本（0.1.3）即可。
+
+# 第二个
+
+## 1、启动报错日志
+
+```plain
+[root@game-platform-exchange-man-gz01a-blue-5d6f5565c6-c5h8z logs]# more catalina.2023-02-17.log 
+17-Feb-2023 15:18:52.915 信息 [main] com.dmall.arch.jdbc.agent.core.config.ConfigManager.init  load config file from pulsar-agent-config.properties
+17-Feb-2023 15:18:55.788 信息 [main] dmall.arch.dsw.agent.core.config.ConfigManager.init  load config file from dsw-agent-config.properties
+17-Feb-2023 15:19:01.901 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server version:        Apache Tomcat/8.5.43
+17-Feb-2023 15:19:01.901 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Jul 4 2019 20:53:15 UTC
+17-Feb-2023 15:19:01.901 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server number:         8.5.43.0
+17-Feb-2023 15:19:01.901 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            3.10.0-1160.25.1.el7.x86_64
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/java/openjdk1.8.0_322/jre
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           1.8.0_322-b06
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /web/servers/tomcat
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /web/servers/tomcat
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/web/servers/tomcat/conf/logging.properties
+17-Feb-2023 15:19:01.902 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/jacocoagent.jar=includes=*,address=0.0.0.0,port=7913,output=tcpserver,append=true
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/web/servers/jdbc-agent/jdbc-agent.jar
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdbc.server.url=http://testpulsar.api.inner-dmall-os.cn/pulsar/getid
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -javaagent:/web/servers/dsw-agent/dsw-agent.jar
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xms1536M
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xmx1536M
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xmn576M
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xss256K
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dfile.encoding=UTF8
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:MaxDirectMemorySize=512M
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:ReservedCodeCacheSize=256M
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+UseConcMarkSweepGC
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+UseCMSCompactAtFullCollection
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:CMSInitiatingOccupancyFraction=70
+17-Feb-2023 15:19:01.903 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+CMSParallelRemarkEnabled
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:SoftRefLRUPolicyMSPerMB=500
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+CMSClassUnloadingEnabled
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:ParallelGCThreads=2
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:ConcGCThreads=1
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:SurvivorRatio=8
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.awt.headless=true
+17-Feb-2023 15:19:01.904 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.net.preferIPv4Stack=true
+17-Feb-2023 15:19:01.905 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.net.client.defaultConnectTimeout=60000
+17-Feb-2023 15:19:01.905 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.net.client.defaultReadTimeout=60000
+17-Feb-2023 15:19:01.905 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddubbo.protocol.port=20880
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddubbo.application.flag=blue
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddubbo.application.shared=true
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddubbo.application.region=gz01a
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddmall.traffic.group.code=blue
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddmall.zone.code=gz01a
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.dmall.zone=gz01
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.dmall.group=blue
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcom.dmall.physical.dc=a
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:MaxMetaspaceSize=256M
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dsun.net.inetaddr.ttl=30
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dnetworkaddress.cache.ttl=30
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddump.directory=/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+PrintGCDetails
+17-Feb-2023 15:19:01.906 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+UseGCLogFileRotation
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:NumberOfGCLogFiles=10
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:GCLogFileSize=20M
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+PrintGCDateStamps
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xloggc:/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7/gc.log
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:+HeapDumpOnOutOfMemoryError
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:ErrorFile=/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7/jvm_error.log
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -XX:HeapDumpPath=/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7/jvm_dump.hprof
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/web/servers/tomcat
+17-Feb-2023 15:19:01.907 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/web/servers/tomcat
+17-Feb-2023 15:19:01.908 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/web/servers/tomcat/temp
+17-Feb-2023 15:19:01.908 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not f
+ound on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib]
+17-Feb-2023 15:19:02.144 信息 [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+17-Feb-2023 15:19:02.202 信息 [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+17-Feb-2023 15:19:02.223 信息 [main] org.apache.catalina.startup.Catalina.load Initialization processed in 2089 ms
+17-Feb-2023 15:19:02.314 信息 [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+17-Feb-2023 15:19:02.314 信息 [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.43
+17-Feb-2023 15:19:02.327 信息 [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/web/servers/tomcat/webapps/ROOT]
+17-Feb-2023 15:19:09.705 信息 [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a comple
+te list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+[root@game-platform-exchange-man-gz01a-blue-5d6f5565c6-c5h8z logs]# more localhost.2023-02-17.log  
+17-Feb-2023 15:19:09.585 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+17-Feb-2023 15:19:09.763 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring root WebApplicationContext
+17-Feb-2023 15:19:21.869 信息 [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log Initializing Spring FrameworkServlet 'springmvc'
+17-Feb-2023 15:19:22.863 严重 [http-nio-8080-exec-2] org.apache.catalina.core.ApplicationContext.log StandardWrapper.Throwable
+        org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'pandoraRpcService': Injection of resource dependencies failed; nested exception is org.springframework.beans.facto
+ry.BeanCreationException: Error creating bean with name 'taskDubboService': Invocation of init method failed; nested exception is java.lang.IllegalStateException: Duplicate Config found for ApplicationConfig of
+ old : [{"appCode":"game-platform-exchange-man","dumpDirectory":"/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7","flag":"blue","id":"dmall-marketing-vote-man","metaData":{"owner":"pinzhu.chen,
+yuanjiao.long,junwang.liu","shared":"true","pro_code":"game-platform","flag":"blue","name":"game-platform-exchange-man","dump.directory":"/web/logs/jvm/game-platform-exchange-man/10.43.41.104_d84e5276f7","regio
+n":"gz01a","app_code":"game-platform-exchange-man"},"name":"game-platform-exchange-man","owner":"pinzhu.chen,yuanjiao.long,junwang.liu","prefix":"dubbo.application","proCode":"game-platform","region":"gz01a","s
+hared":"true","valid":true}] and new : [{"id":"dmall-marketing-vote-man","metaData":{"owner":"pinzhu.chen,yuanjiao.long,junwang.liu","name":"dmall-marketing-vote-man"},"name":"dmall-marketing-vote-man","owner":
+"pinzhu.chen,yuanjiao.long,junwang.liu","prefix":"dubbo.application","valid":true}], you should use only one unique ApplicationConfig for one application.
+                at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessPropertyValues(CommonAnnotationBeanPostProcessor.java:321)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+                at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+                at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+                at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+                at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+                at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+                at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+                at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:867)
+                at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:543)
+                at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)
+                at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:634)
+                at org.springframework.web.servlet.FrameworkServlet.createWebApplicationContext(FrameworkServlet.java:682)
+                at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:553)
+                at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)
+                at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:171)
+                at javax.servlet.GenericServlet.init(GenericServlet.java:158)
+                at org.apache.catalina.core.StandardWrapper.initServlet(StandardWrapper.java:1132)
+                at org.apache.catalina.core.StandardWrapper.loadServlet(StandardWrapper.java:1079)
+                at org.apache.catalina.core.StandardWrapper.allocate(StandardWrapper.java:763)
+                at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:134)
+                at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96)
+                at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:493)
+                at org.apache.catalina.core.StandardHostValve.invoke$original$LgYdJrcG(StandardHostValve.java:137)
+                at org.apache.catalina.core.StandardHostValve.invoke$original$LgYdJrcG$accessor$2vIISasr(StandardHostValve.java)
+                at org.apache.catalina.core.StandardHostValve$auxiliary$Zd8vALnR.call(Unknown Source)
+                at org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:92)
+                at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java)
+                at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81)
+                at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:660)
+                at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87)
+                at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+                at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:798)
+                at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66)
+                at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:808)
+                at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1498)
+                at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+                at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+                at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+[root@game-platform-exchange-man-gz01a-blue-5d6f5565c6-c5h8z logs]# 
+```
+## 2、报错原因
+
+就是项目启动加载了两个不同的应用名，如下：
+
+![](https://raw.githubusercontent.com/SmallNum/MyPic/master/img20221110/202302271742701.png)
+
+代码中的应用名来自，使用 Dubbo 服务时，标识了一个不同的名字。
+
+![](https://raw.githubusercontent.com/SmallNum/MyPic/master/img20221110/202302271742159.png)
+
+
+## 3、解决
+
+代码中 application 的 name 配置的和应用一致即可。直接使用默认应用名。
+
+```plain
+<dubbo:application name="${__mid.app.code}" owner="pinzhu.chen,yuanjiao.long,junwang.liu"/>
+```
+# END
