@@ -1,0 +1,193 @@
+public class TokenOrigin extends TokenVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * id(主键)
+     */
+    private Long id;
+
+    /**
+     * name(令牌名称)
+     */
+    @DataName(name = "令牌名称")
+    private String name;
+
+    /**
+     * activity_name(活动名称)
+     */
+    @DataName(name = "备注")
+    private String activityName;
+
+    /**
+     * type(令牌使用类别,1.多点卡系统,2.促销系统,3.任务系统)
+     */
+    private String type;
+
+    /**
+     * status(令牌状态,1.初始,2.有效,3.失效,4.作废)
+     */
+    @DataName(name = "令牌状态")
+    private Integer status;
+
+    /**
+     * receive_form(令牌发放领取的形式,是1.定向发放,还是2.非定向领取)
+     */
+    private Integer receiveForm;
+
+    /**
+     * start_time(令牌领取的有效开始时间)
+     */
+    @DataName(name = "令牌开始时间")
+    private Date startTime;
+
+    /**
+     * end_time(令牌领取的有效结束时间)
+     */
+    @DataName(name = "令牌结束时间")
+    private Date endTime;
+
+    /**
+     * amount_type(令牌发放总数类型,1为无限制,2为限制)
+     */
+    @DataName(name = "令牌总数类型")
+    private Integer amountType;
+
+    /**
+     * amount(令牌领取总数)
+     */
+    @DataName(name = "令牌总数")
+    private Integer amount;
+
+    /**
+     * remain_amount(令牌领取总数的剩余数量)
+     */
+    private Integer remainAmount;
+
+    /**
+     * use_amount_type(使用令牌的次数类型,1.无限制,2.固定次数,3.累加次数)
+     */
+    @DataName(name = "令牌使用次数类型")
+    private Integer useAmountType;
+
+    /**
+     * use_amount(当选择为固定次数时,固定的次数值存入此字段)
+     */
+    @DataName(name = "固定次数令牌次数")
+    private Integer useAmount;
+
+    /**
+     * invalid_type(令牌失效方式,1手动失效,2自动失效)
+     */
+    private Integer invalidType;
+
+    /**
+     * invalid_time(自动失效时,指定的失效截止时间)
+     */
+    private Date invalidTime;
+
+    /**
+     * valid_time_type(用户持有令牌的有效时间类型,1.无限制,2.相对时长,3.绝对时长,4.独立有效期)
+     */
+    @DataName(name = "用户令牌有效时间类型")
+    private Integer validTimeType;
+
+    /**
+     * valid_day_num(当为相对时长时的有效天数) 新增独立时长 也用这个字段
+     */
+    @DataName(name = "持有时间")
+    private Integer validDayNum;
+
+   public Date getStartCreateDate() {
+     return startCreateDate;
+   }
+
+   /**
+     * user_start_time(用户持有令牌的有效时长开始时间)
+     */
+   @DataName(name = "用户令牌开始时间")
+    private Date userStartTime;
+
+    /**
+     * user_end_time(用户持有令牌的有效时长结束时间)
+     */
+    @DataName(name = "用户令牌结束时间")
+    private Date userEndTime;
+
+    /**
+     * proposer_id(令牌创建人id)
+     */
+    private Long proposerId;
+
+    /**
+     * proposer_name(令牌创建人名称)
+     */
+    private String proposerName;
+
+    /**
+     * created(创建时间)
+     */
+    private Date created;
+
+    /**
+     * modifed(修改时间)
+     */
+    private Date modifed;
+
+    /**
+     * yn(是否有效的标记字段)
+     */
+    private Integer yn;
+
+    /**
+     * 按照时间查询时使用
+     */
+    private Date startCreateDate;
+
+    /**
+     * 按照时间查询时使用
+     */
+    private Date endCreateDate;
+
+    /**
+     * 商家id
+     */
+    private Integer venderId;
+
+    /**
+     * 商家名称
+     */
+    private String venderName;
+
+    /**
+     * 令牌的来源平台
+     */
+    private Integer sourcePlatform;
+
+   /**
+    * isNaturDay(是否为自然天或者24小时,1:是自然天,0:是24小时制,默认为24小时)
+    */
+    private Integer isNatureDay;
+
+    /**
+     * 关联表token_vender记录的该token对应的venderIdList
+     */
+    private List<Long> venderIdList;
+
+    /**
+     * 活动类型，分为 1:多点;2:商家
+     */
+    private Integer activityType;
+
+    /**
+     * 将venderIdList以逗号分隔
+     */
+    @DataName(name = "商家ID")
+    private String venderIdListStr;
+
+    /**
+     * 独立有效期令牌的时间单位，1：天，2：月
+     */
+    @DataName(name = "持有时间单位")
+    private Integer validTimeUnit;
+
+    private String statusName;
