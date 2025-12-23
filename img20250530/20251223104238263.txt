@@ -1,0 +1,89 @@
+-- 30 天 643311 
+select
+    count(1)
+from
+    (
+        SELECT
+            user_id
+        FROM
+            ch_ddw_medusa.vender_user_profile_view AS b
+        WHERE
+            b.user_id IS NOT NULL
+            AND b.phone > ''
+            AND b.vender_id = 86
+            AND (
+                hasAny (
+                    splitByChar (',', ifNull(toString (b.store_ids), '-1')),
+                    splitByChar (',', '12671,15586')
+                ) > 0
+            )
+            AND (
+                b.user_id NOT IN(
+                    SELECT
+                        a.webuser_id
+                    FROM
+                        ch_ddw_medusa.ads_dmall_order_ware_local AS a
+                    WHERE
+                        1 = 1
+                        and a.order_status in (64, 1024)
+                        AND toString (a.vender_id) IN ('86')
+                        AND toString (a.trade_type) IN ('1')
+                        and toString (a.order_complete_time) >= '2023-02-12 00:00:00'
+                        AND toString (a.order_complete_time) <= '2023-04-12 23:59:59'
+                        AND a.dt >= '20230128'
+                        AND a.dt <= '20230413'
+                    group by
+                        a.webuser_id
+                    having
+                        count(1) > 0
+                )
+            )
+        group by
+            user_id
+    ) t
+
+
+
+-- 120 天  632858 
+select
+    count(1)
+from
+    (
+        SELECT
+            user_id
+        FROM
+            ch_ddw_medusa.vender_user_profile_view AS b
+        WHERE
+            b.user_id IS NOT NULL
+            AND b.phone > ''
+            AND b.vender_id = 86
+            AND (
+                hasAny (
+                    splitByChar (',', ifNull(toString (b.store_ids), '-1')),
+                    splitByChar (',', '12671,15586')
+                ) > 0
+            )
+            AND (
+                b.user_id NOT IN(
+                    SELECT
+                        a.webuser_id
+                    FROM
+                        ch_ddw_medusa.ads_dmall_order_ware_local AS a
+                    WHERE
+                        1 = 1
+                        and a.order_status in (64, 1024)
+                        AND toString (a.vender_id) IN ('86')
+                        AND toString (a.trade_type) IN ('1')
+                        and toString (a.order_complete_time) >= '2022-12-14 00:00:00'
+                        AND toString (a.order_complete_time) <= '2023-04-12 23:59:59'
+                        AND a.dt >= '20221129'
+                        AND a.dt <= '20230413'
+                    group by
+                        a.webuser_id
+                    having
+                        count(1) > 0
+                )
+            )
+        group by
+            user_id
+    ) t
