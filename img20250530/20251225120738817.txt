@@ -1,0 +1,105 @@
+# 1、涉及的表结构+对象（8个-）
+```
+hive_up_decoration_page  +   HiveUpDecorationPage 
+hive_up_decoration_child_page +  HiveUpDecorationChildPage
+hive_up_decoration_child_page_layout +  HiveUpDecorationChildPageLayout
+hive_up_decoration_layout_config_pic +  HiveUpDecorationLayoutConfigPic
+hive_up_decoration_layout_config_lottery +  HiveUpDecorationLayoutConfigLottery
+hive_up_decoration_layout_config_coupon +  HiveUpDecorationLayoutConfigCoupon
+hive_up_decoration_layout_config_sku +  HiveUpDecorationLayoutConfigSku
+hive_up_decoration_layout_config_sku_list +  HiveUpDecorationLayoutConfigSkuList
+
+```
+
+# 2、装修系统的接口文档：
+商城装修接口文档 https://duodian.feishu.cn/docs/doccngtYHzNpfHDg0MrDDwFczqe#RzNvrf 
+
+# 3、测试环境测试与执行
+## 3.1 造任务数据+装修系统的配置数据
+```
+-- 造：装修系统的页面+配置数据
+
+INSERT INTO hive_up_decoration_page (id,furnish_page_id,vendor_id,store_id,template_id,page_name,open_position,begin_time,end_time,share_title,share_img_url,yn,created,modified,create_user,modify_user) VALUES
+	 (1,NULL,1,NULL,6681,'测试页面-PHC',1,'2022-10-12 12:12:12','2022-10-12 12:12:12','分享标题','www.baidu.com',1,'2022-10-11 19:47:35','2022-10-11 19:47:44',NULL,NULL);
+	 
+INSERT INTO hive_up_decoration_child_page_layout (id,parent_page_id,furnish_layout_id,layout_sort,layout_type,yn,created,modified,create_user,modify_user) VALUES
+	 (1,1,NULL,1,1,1,'2022-10-11 19:48:25','2022-10-11 19:48:25',NULL,NULL);
+INSERT INTO `hive_up_decoration_child_page_layout` (`id`,`parent_page_id`,`furnish_layout_id`,`layout_sort`,`layout_type`,`yn`,`created`,`modified`,`create_user`,`modify_user`) VALUES (2,1,null,4,2,1,"2022-10-11 19:48:25","2022-10-12 16:08:44",null,null);
+INSERT INTO `hive_up_decoration_child_page_layout` (`id`,`parent_page_id`,`furnish_layout_id`,`layout_sort`,`layout_type`,`yn`,`created`,`modified`,`create_user`,`modify_user`) VALUES (3,1,null,3,3,1,"2022-10-11 19:48:25","2022-10-12 16:08:44",null,null);
+INSERT INTO `hive_up_decoration_child_page_layout` (`id`,`parent_page_id`,`furnish_layout_id`,`layout_sort`,`layout_type`,`yn`,`created`,`modified`,`create_user`,`modify_user`) VALUES (4,1,null,2,4,1,"2022-10-11 19:48:25","2022-10-12 16:08:44",null,null);
+	 
+INSERT INTO hive_up_decoration_layout_config_pic (id,layout_id,sort,medusa_group_id,bi_group_id,img_url,img_width,img_height,yn,created,modified,create_user,modify_user) VALUES
+	 (1,1,1,123,NULL,'img','600','400',1,'2022-10-11 19:48:54','2022-10-11 19:48:54',NULL,NULL),
+	 (2,2,2,456,NULL,'img','600','400',1,'2022-10-11 19:49:30','2022-10-11 19:49:30',NULL,NULL);
+	 
+INSERT hive_up_decoration_layout_config_lottery (id,layout_id,sort,medusa_group_id,bi_group_id,market_activity_id,bi_market_activity_id,turntable_img,lottery_times_show,winner_info_show,surplus_assets_show,yn,created,modified,create_user,modify_user) VALUES
+	 (1,2,1,123,NULL,'8498',NULL,'dazhuanpan_url',1,1,1,1,'2022-10-13 13:53:02','2022-10-13 13:53:02',NULL,NULL);
+
+INSERT hive_up_decoration_layout_config_coupon (id,layout_id,sort,medusa_group_id,bi_group_id,market_activity_id,bi_market_activity_id,yn,created,modified,create_user,modify_user) VALUES
+	 (1,3,2,123,NULL,'8498',NULL,1,'2022-10-13 13:52:19','2022-10-13 13:52:19',NULL,NULL);
+
+INSERT hive_up_decoration_layout_config_sku (id,layout_id,sort,medusa_group_id,bi_group_id,yn,created,modified,create_user,modify_user) VALUES
+	 (1,4,1,123,NULL,1,'2022-10-13 13:53:35','2022-10-13 13:53:35',NULL,NULL);
+	 
+INSERT hive_up_decoration_layout_config_sku_list (id,layout_sku_config_id,sku_id,yn,created,modified,create_user,modify_user) VALUES
+	 (1,1,234,1,'2022-10-13 13:53:58','2022-10-13 13:53:58',NULL,NULL);
+	 
+--- 造：执行的活动数据
+
+INSERT INTO `up_activity` (`id`,`requirement_id`,`project_id`,`source_hive_id`,`activity_name`,`activity_type`,`vendor_id`,`begin_time`,`end_time`,`total_task_count`,`todo_task_count`,`status`,`yn`,`created`,`modified`,`create_user`,`modify_user`) VALUES (1000,1,2,2,"装修测试-PHC",1,1,"2022-01-01 10:00:00","2022-10-01 10:00:00",null,null,0,1,"2022-10-10 10:48:55","2022-10-11 19:39:32","system",null);
+
+--- 造：执行的任务数据
+
+INSERT INTO `up_task` (`id`,`requirement_id`,`project_id`,`activity_id`,`vendor_id`,`source_hive_id`,`task_name`,`task_type`,`task_order`,`status`,`activity_name`,`exec_param`,`task_config`,`task_ext`,`retry_times`,`remark`,`yn`,`created`,`modified`,`create_user`,`modify_user`) VALUES (80001,1,2,2,1,10000,"装修系统任务同步",60,99,20,"装修系统任务-PHC",null,"1","",10,"处理成功",1,"2022-10-10 17:05:37","2022-10-11 16:29:08",null,null);
+
+```
+
+## 3.2 触发任务的执行
+```
+https://testmagpie-partner.dmall.com/up/api/executeTask?targetType=2&hiveIds=1000
+
+UPDATE hive_up_decoration_page SET `furnish_page_id`=NULL WHERE `id`=1; 
+
+```
+
+## 3.3 查询与验证任务的执行+日志
+```
+1、查询造的数据：
+SELECT * FROM up_task
+WHERE `id` = 80001
+LIMIT 20;
+
+SELECT * FROM up_activity
+WHERE `id` = 1000
+LIMIT 20;
+
+
+SELECT * FROM hive_up_decoration_page 
+LIMIT 20;
+
+SELECT * FROM hive_up_decoration_child_page_layout  
+LIMIT 20;
+
+SELECT * FROM hive_up_decoration_layout_config_pic   
+LIMIT 20;
+
+SELECT * FROM hive_up_decoration_layout_config_coupon 
+LIMIT 20;
+
+SELECT * FROM hive_up_decoration_layout_config_lottery  
+LIMIT 20;
+
+SELECT * FROM hive_up_decoration_layout_config_sku   
+LIMIT 20;
+
+
+2、日志：
+grep -n -2 'executeTask' magpie.log --color=auto
+grep -n -2 'f6e084cc03fe7979' magpie.log --color=auto
+
+
+cat magpie.log | tail -n +5649 | head -n 100
+
+```
+
+# END
