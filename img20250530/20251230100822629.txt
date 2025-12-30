@@ -1,0 +1,68 @@
+# 【卡数据采集测试】
+
+# 1、测试Job：hisStockCardJob
+
+```sql
+1、配置JSON串
+-- 参数：完整参数
+{"coid":"8","createdBegin":"2019-10-09 18:00:00","createdEnd":"2019-10-09 19:00:00","modifiedBegin":"2019-11-07 19:00:00","modifiedEnd":"2019-11-07 20:00:00","storeId":"107479","vendorId":"1"}
+
+-- 参数：不含时间
+{"coid":"8","storeId":"107479","vendorId":"1"}
+
+-- 参数：不含修改时间
+{"coid":"8","createdBegin":"2019-10-09 18:00:00","createdEnd":"2019-10-09 19:00:00","storeId":"107479","vendorId":"1"}
+
+2、具体SQL
+
+-- 所有条件
+SELECT id,coid,vendor_id,store_id,created,modified
+FROM jingwei_card_stock.stock_card_099  
+where coid = 8 and vendor_id = 1 and store_id =107479 
+and created >= '2019-10-09 18:00:00' and created <= '2019-10-09 19:00:00'
+and modified >= '2019-11-07 19:00:00' and modified <= '2019-11-07 20:00:00';
+
+-- 查询总数
+SELECT count(1)
+FROM jingwei_card_stock.stock_card_099  
+where coid = 8;
+
+```
+
+# 2、测试Job：HisStockDetailJob
+
+```sql
+1、配置JSON串
+{"coid":"8","createdBegin":"2019-11-07 19:00:00","createdEnd":"2019-11-07 20:00:00"}
+
+2、具体SQL
+SELECT *
+FROM jingwei_card_stock.stock_detail_099  
+where coid = 8 and created >= '2019-11-07 19:00:00' and created <= '2019-11-07 20:00:00';
+```
+
+# 3、测试Job：hisTradeDetailUserJob
+
+```sql
+1、配置JSON串
+{"coid":"8","createdBegin":"2019-09-29 19:00:00","createdEnd":"2019-09-29 19:05:00"}
+
+2、具体SQL
+SELECT COUNT(1) 
+FROM jingwei_card_core.trade_detail_user_099  
+where coid = 8 and created >= '2019-09-29 19:00:00' and created <= '2019-09-29 19:05:00';
+```
+
+# 4、测试Job：hisUserCardJob
+
+```sql
+1、配置JSON串
+{"coid":"8","createdBegin":"2019-09-29 19:03:00","createdEnd":"2019-09-29 19:04:10","modifiedBegin":"2020-07-21 11:05:20","modifiedEnd":"2020-07-21 11:05:30","sellVendorId":"92","coVendorId":"92"}
+
+2、具体SQL
+SELECT *
+FROM jingwei_card_core.user_card_001
+where coid = 8  and co_vendor_id = 92 and sell_vendor_id =92 
+and created >= '2019-09-29 19:03:00' and created <= '2019-09-29 19:04:10'
+and modified >= '2020-07-21 11:05:20' and modified <= '2020-07-21 11:05:30';
+```
