@@ -1,0 +1,160 @@
+# 销售数据核对SQL（重百为例）
+
+# 附：表字段说明
+
+```sql
+-- 基础字段含义说明
+sell_time 销售时间
+recharge_status 充值状态  0:待充值 1:充值中 2:充值成功 3:充值失败 4:取消充值 5:已售后
+receipt_status 收款状态  1:未收  2:已收款
+card_type  VIRTUAL_CARD(1,"虚拟卡"), ENTITY_CARD(2,"实体卡");
+sale_source  4, "批量充值" 5, "团购" 98, "大客户销售单"
+
+-- 对于销售时间
+6月数据时间都是用的 pay_time
+5月以17号区分，之前是 sell_time ，之后是 pay_time  （仅限团购数据）
+4月3月等之前都是 sell_time
+```
+
+# 一、各月份各类型数据筛选（重百）
+
+由于代码的修改，导致不同月份对应的SQL时间不同
+
+## 1、6月份数据（含以后）
+
+```
+-- 所有
+select sum( `denomination`) ,count(1)
+from `card_sale_record`
+where
+	((sell_time >= '2021-06-01' and `sell_time` < '2021-07-01'
+	and sell_big_order_no is null)
+	or
+	(`pay_time` >= '2021-06-01' and `pay_time` < '2021-07-01'
+	and sell_big_order_no is not null))
+	and yn =1 and coid=10
+-- 充值成功
+	and `recharge_status` =2 and `receipt_status` =2
+-- 已收款待充值的所有
+-- and (`recharge_status` =0 OR `recharge_status` =1  ) and `receipt_status` =2 and `aftersale_date` is null
+-- 售后的所有
+-- and `aftersale_date` is not null
+```
+
+## 2、5月份数据
+
+```sql
+-- 统计
+SELECT SUM(`denomination`), COUNT(1)
+FROM `card_sale_record`
+WHERE (sell_time >= '2021-05-01'
+		AND `sell_time` < '2021-06-01'
+		AND sell_big_order_no IS NULL
+		OR ((`pay_time` >= '2021-05-18'
+				AND `pay_time` < '2021-06-01')
+			OR `sell_time` >= '2021-05-01'
+			AND `sell_time` < '2021-05-18'
+			AND sell_big_order_no IS NOT NULL))
+	AND yn = 1
+	AND coid = 2
+	AND `aftersale_date` IS NOT NULL;
+```
+
+## 3、4月份数据（含之前）
+
+修改下时间即可，其他不用改 ： `sell_time >= '2021-04-01' and`sell_time`< '2021-05-01'`
+
+```
+-- 时间范围修改
+where sell_time >= '2021-04-01' and `sell_time` < '2021-05-01'
+
+-- 具体SQL 
+select sum( `denomination`) ,count(1) 
+from `card_sale_record` 
+where sell_time >= '2021-02-01' and `sell_time` < '2021-03-01' 
+	and yn =1 and coid=10
+	and `recharge_status` =0 and `receipt_status` =2 and `aftersale_date` is null;
+```
+
+# 二、其他条件筛选数据
+
+## 2.1 不同筛选条件
+
+```sql
+-- 转赠（未转赠）
+and `business_type` =20001 and redemption_status = 0
+-- 转赠（已转赠）
+and `business_type` =20001 and redemption_status = 2
+
+-- 团购
+and `sale_source` in(4,5,98)
+-- 散客
+and `sale_source` not in(4,5,98)
+
+-- 卡类型
+and `card_type` = 2
+```
+
+## 2.2 类型分组：卡类型 + POS ID 分组
+
+```sql
+-- 卡类型分组
+select card_type,sum( `denomination`) ,count(1)
+from `card_sale_record`
+where yn =1
+GROUP BY card_type
+ORDER BY card_type;
+
+-- 日期和POS ID分组
+select date_format(sell_time,'%Y-%m-%d'), `pos_id`  ,sum( `denomination`) ,count(1)
+from `card_sale_record`
+where yn =1
+group by date_format(sell_time,'%Y-%m-%d'),pos_id;
+
+```
+
+# 三、错误数据筛选SQL
+
+```sql
+-- 查询某月每天数据（日期分组）
+select date_format(sell_time,'%Y-%m-%d'),sum( `denomination`) ,count(1)
+from `card_sale_record`
+where sell_time >= '2021-02-01' and `sell_time` < '2021-03-01'
+	and yn =1 and coid=10
+	and `recharge_status` =2 and `receipt_status` =2
+	and `sale_source` in(4,5,98)
+	and `card_type` = 2
+group by date_format(sell_time,'%Y-%m-%d');
+
+-- 查询某天数据（大客户销售单分组）
+select date_format(sell_time,'%Y-%m-%d'),sell_big_order_no,sum( `denomination`) ,count(1)
+from `card_sale_record`
+where sell_time >= '2021-02-15' and `sell_time` < '2021-02-16'
+	and yn =1 and coid=10
+	and `recharge_status` =2 and `receipt_status` =2
+	and `sale_source` in(4,5,98)
+	and `card_type` = 2
+group by date_format(sell_time,'%Y-%m-%d'),sell_big_order_no;
+
+-- 查询某天单卡数据（时间升序，卡号降序）
+select card_outer_no, sell_big_order_no, sell_time,recharge_status,receipt_status,aftersale_date
+from `card_sale_record`
+where sell_time >= '2021-02-15' and `sell_time` < '2021-02-16'
+	and yn =1 and coid=10
+	and `recharge_status` =2 and `receipt_status` =2
+	and `sale_source` in(4,5,98)
+	and `card_type` = 2
+	and sell_big_order_no = '00020210215001021228'
+ORDER BY `sell_time` DESC ,card_outer_no ASC 
+LIMIT 0,1000;
+
+-- 查询单一单卡的主要数据
+select card_outer_no, sell_big_order_no, sell_time,pay_time,recharge_status,receipt_status,aftersale_date
+from `card_sale_record`
+where card_outer_no in ('0056875300','0056875400');
+
+-- 查询单一卡的数据
+select *
+from `card_sale_record`
+where card_outer_no in ('0056875300','0056875400');
+```
