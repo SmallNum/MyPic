@@ -1,0 +1,82 @@
+# 01-庄园PCI合规改造
+
+# 1、需要改动的页面
+
+```sql
+需要改动的页面
+- 页面
+http://farm-man.dmall.com/#index/farm_man_h5/gardenUserManage
+http://farm-man.dmall.com/#index/farm_man_h5/gardenOrderManage
+
+- 页面中具体请求
+http://farm-play-man.dmall.com/gardenUser/userBaseInfo
+http://farm-play-man.dmall.com/gardenOrder/list?orderId=&orderStartTime=2021-05-28+00%3A00%3A00&orderEndTime=2021-05-28+23%3A59%3A59&userId=&vendorType=&orderStatus=&userPhone=&skuName=&pageSize=10&pageNo=1&_=1622171460861
+
+```
+
+# 2、参考虚拟的源码
+
+```sql
+- 后台的Controller
+@RequestMapping(value = "/deCode")
+public String deCode(String enCodeStr) {
+	String orgStr = null;
+	try {
+		orgStr = AESUtils.decrypt(enCodeStr,ET_ENCODE_KEY);
+	} catch (Exception e) {
+		e.printStackTrace();
+		return null;
+	}
+    return orgStr;
+}
+
+- 前台的解析代码
+function showDecodeNum(obj,id) {
+    jQuery.ajax({
+        type: 'GET',
+        url: "/str/deCode?enCodeStr=" + obj,
+        success: function (data) {
+            if('failure'==data.code){
+                alert(data.result);
+                return ;
+            }
+            var str = data.replace(/"/g,"");
+            $("#"+id).html(str);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            XUI_dialog("服务端异常");
+        }
+    });
+}
+```
+
+# 3、测试点和测试数据
+
+```sql
+1、测试点
+- 果园晒单请求中的商品名称问题【Done】
+- 果树变动更新时间问题【Done】
+- Man端的PCI合规改造 【Done】
+
+2、测试请求和数据
+查询更新时间
+SELECT * FROM `garden_user_tree_85` WHERE `user_id` = 54274085
+
+查询滚动条数据（具体请求见postMan）
+http://testfarm.dmall.com/garden/goods/list 
+```
+
+# 4、上线流程
+
+## 4.1 上线功能和上线系统
+
+```sql
+上线功能点：
+1. 庄园Man端：PCI合规改造 + 下单数和下单用户数统计问题改造
+2. 庄园API端：滚动条数据商品名称改造
+
+上线系统：
+- 庄园Man端H5
+- 庄园Man端后台
+- 庄园API
+```
