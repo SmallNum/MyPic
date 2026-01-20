@@ -1,0 +1,95 @@
+# 消费数据核对相关SQL
+
+# 0、卡主体ID信息
+
+```sql
+美通卡： coid=2
+重百世纪卡： coid=10
+```
+
+# 1、各种类型数据统计
+
+```sql
+--消费
+select count(1),sum(fee) from `card_trade_record` 
+where coid=10 AND yn = 1 
+and `trade_time` >='2021-07-01' and `trade_time` < '2021-08-01'  
+and `business_type` in (10002,10012) 
+and `trade_status` =2 ;
+
+-- 退款
+and `business_type` in (10003,10009,10022)
+-- 冲正
+and `business_type` in (10006)
+-- 退款冲正
+and `business_type` in (10024)
+```
+
+# 2、分组：卡类型+平台+日期
+
+```sql
+-- 卡类型分组
+select card_type,count(1),sum(fee) from `card_trade_record` 
+where coid=10 AND yn = 1 
+and `trade_time` >='2021-07-01' and `trade_time` < '2021-08-01'  
+and `business_type` in (10002,10012) 
+and `trade_status` =2 
+GROUP BY card_type
+ORDER BY `card_type` ASC ;
+
+-- 平台分组
+select platform ,count(1),sum(fee) 
+from `card_trade_record` 
+where coid=2 AND yn = 1 
+and `trade_time` >='2021-07-01' and `trade_time` < '2021-08-01'  
+and `business_type` in (10002,10012) 
+and `trade_status` =2 
+and `order_sale_type` = 1 
+and `card_type` =1 
+GROUP BY platform
+
+-- 日期分组
+select date_format(trade_time,'%Y-%m-%d'),count(1),sum(fee) 
+from `card_trade_record` 
+where coid=2 AND yn = 1 
+and `trade_time` >='2021-07-01' and `trade_time` < '2021-08-01'  
+and `business_type` in (10002,10012) 
+and `trade_status` =2 
+and `order_sale_type` = 1 
+and `card_type` =1 
+and `platform` = 'POS' 
+GROUP BY  date_format(trade_time,'%Y-%m-%d') 
+ORDER BY date_format(trade_time,'%Y-%m-%d') ASC
+```
+
+# 3、其他筛选条件
+
+```sql
+-- 普通订单
+and `order_sale_type` = 1
+-- 卡类型
+and `card_type` =1
+```
+
+# 4、问题数据查找
+
+```sql
+-- 查询单一数据
+select *
+from `card_trade_record` 
+where coid=2 AND yn = 1 
+AND `card_outer_no` = 'v162436718704292'
+
+-- 查询范围明细数据
+select card_outer_no,trade_time
+from `card_trade_record` 
+where coid=2 AND yn = 1 
+and `trade_time` >='2021-07-19' and `trade_time` < '2021-07-20'  
+and `business_type` in (10002,10012) 
+and `trade_status` =2 
+and `order_sale_type` = 1 
+and `card_type` =1 
+and `platform` = 'POS'
+ORDER BY trade_time DESC  
+LIMIT 0,1000
+```
