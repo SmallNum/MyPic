@@ -1,0 +1,36 @@
+-- 1、查询统计结果（字段：new_users）
+SELECT * FROM `stats_outline`
+WHERE `dt` = '20230122'
+ORDER BY `id` DESC 
+LIMIT 20;
+
+-- 2、查询大数据数据使用的SQL
+SELECT count(1) FROM  
+(SELECT user_id FROM dmall_farm.USER WHERE yn = 1  
+AND create_time >= '2023-01-22 00:00:00' AND create_time < '2023-01-23 00:00:00'  
+GROUP BY user_id ) a  
+
+发现大数据查出来就是这么多。
+
+3、查询 USER 表中数据的新增逻辑
+新增用户有两个场景，一个是页面访问，一个是通过dubbo服务发奖励，如果发现用户没有注册，会自动注册（具体见：com.dmall.farm.play.service.impl.UserServiceImpl#incrFertilizer）。
+后续让运营去确认下是否有其他发放肥料奖励的入口。
+
+4、其他SQL
+
+-- 查询肥料记录
+SELECT * FROM `user_fertilizer_record_133`
+where `type` = 1 AND `source` = 2
+ORDER BY `id` DESC 
+LIMIT 20;
+
+
+-- 查询交易行系统
+SELECT * FROM `trade_record_005`
+WHERE `trade_type` = 10 AND `trade_way` = 202
+AND `sys_source` != 'farm'
+ORDER BY `id` DESC 
+LIMIT 20;
+
+
+5、END
