@@ -1,0 +1,26 @@
+-- SQL 造数据
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"scan_order_user_count","125731",3,"2023-05-22","2023-05-23 06:57:01","2023-05-23 06:57:01",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"freego_order_user_count","155549",3,"2023-05-22","2023-05-23 06:57:01","2023-05-23 06:57:01",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"glb_order_user_count","529",3,"2023-05-22","2023-05-23 06:57:01","2023-05-23 06:57:01",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"o2o_order_user_count","64120",3,"2023-05-22","2023-05-23 06:57:00","2023-05-23 06:57:00",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"order_user_count","342700",3,"2023-05-22","2023-05-23 06:57:00","2023-05-23 06:57:00",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"recall_user_count","23569",3,"2023-05-22","2023-05-23 06:56:59","2023-05-23 06:56:59",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"predict_loss_user_count","59874",3,"2023-05-22","2023-05-23 06:56:58","2023-05-23 06:56:58",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"valuable_user_count","116175",3,"2023-05-22","2023-05-23 06:56:57","2023-05-23 06:56:57",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"re_order_user_count","324993",3,"2023-05-22","2023-05-23 06:56:56","2023-05-23 06:56:56",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"first_order_user_count","12877",3,"2023-05-22","2023-05-23 06:56:55","2023-05-23 06:56:55",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"active_user_count","925019",3,"2023-05-22","2023-05-23 06:56:54","2023-05-23 06:56:54",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"new_user_count","15348",3,"2023-05-22","2023-05-23 06:56:53","2023-05-23 06:56:53",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"loss_user_stage_count","38707926",3,"2023-05-22","2023-05-23 06:56:22","2023-05-23 06:56:22",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"silence_user_stage_count","2014453",3,"2023-05-22","2023-05-23 06:56:03","2023-05-23 06:56:03",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"grow_user_stage_count","5427539",3,"2023-05-22","2023-05-23 06:56:00","2023-05-23 06:56:00",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"new_user_stage_count","281705",3,"2023-05-22","2023-05-23 06:55:59","2023-05-23 06:55:59",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"total_user_count","46431623",3,"2023-05-22","2023-05-23 06:55:26","2023-05-23 06:55:26",1);
+
+-- 查询数据：
+SELECT * FROM `vender_metric_data` LIMIT 20;
+
+-- 造新指标的数据：
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"log_off_user_count","16431623",3,"2023-05-22","2023-05-23 06:55:26","2023-05-23 06:55:26",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"log_off_user_count","164316",3,"2023-05-23","2023-05-23 06:55:26","2023-05-23 06:55:26",1);
+INSERT INTO `vender_metric_data` (`vender_id`,`store_id`,`metric_code`,`metric_value`,`metric_type`,`calculate_date`,`created`,`modified`,`yn`) VALUES (1,-1,"log_off_user_count","10431699",3,"2023-05-15","2023-05-23 06:55:26","2023-05-23 06:55:26",1);
