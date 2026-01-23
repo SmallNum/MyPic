@@ -1,0 +1,60 @@
+-- 筛选SQL 
+
+SELECT
+    a.user_id AS user_id,
+    a.sku_id AS sku_id,
+    a.front_category1_id AS front_category1_id
+FROM
+    dmall_medusa.light_events_v1 AS a
+WHERE
+    1 = 1
+    AND a.event_code = 'page_view'
+    AND a.user_id IS NOT NULL
+    --  and cutQueryString (page_url) = 'app://DMWareDetailPage'
+    AND CAST(a.vender_id AS string) IN ('6222')
+    AND CAST(a.sku_id AS string) = '192596801'
+    -- AND toString (a.front_category1_id) IN ('21000881', '21000241', '21000921')
+    and CAST(a.server_time AS string) >= '2023-01-07 00:00:00'
+    AND CAST(a.server_time AS string) <= '2023-04-16 23:59:59'
+    AND a.dt >= '20230107'
+    AND a.dt <= '20230417'
+
+
+-- 具体商品信息
+CACHE
+TABLE
+    dim_ware_temp AS (
+        SELECT
+            vware.vender_id,
+            vware.matnr,
+            mware.sku_id,
+            vware.cm_category3_id AS front_category3_id,
+            -- vware.cm_category3_name AS front_category3_name,
+            vware.cm_category2_id AS front_category2_id,
+            -- vware.cm_category2_name AS front_category2_name,
+            vware.cm_category1_id AS front_category1_id,
+            -- vware.cm_category1_name AS front_category1_name,
+            vware.back_category3_id AS category3_id,
+            vware.back_category3_name AS category3_name,
+            vware.back_category2_id AS category2_id,
+            vware.back_category2_name AS category2_name,
+            vware.back_category1_id AS category1_id,
+            vware.back_category1_name AS category1_name
+        FROM
+            dim_dm.dim_vender_ware vware
+            left join mid_dm.mid_ware mware on mware.vender_id = vware.vender_id
+            and mware.matnr = vware.matnr
+    );
+
+SELECT
+    *
+FROM
+    dim_ware_temp
+where
+    sku_id = 192596801
+
+-- 单独查询商品前台类目数据
+select *
+from dim_dm.dim_vender_ware
+where matnr = 13000004
+
