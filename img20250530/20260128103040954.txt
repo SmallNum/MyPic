@@ -1,0 +1,61 @@
+1、商家的所有指标数据
+
+SELECT * FROM `vender_metric_data`
+WHERE `vender_id` = 69
+AND `calculate_date` >= '2023-06-28'
+AND `metric_code` !='store_user_count'
+ORDER BY `id` DESC 
+LIMIT 200;
+
+2、涉及的所有指标
+scan_order_user_count    【无问题，不需要处理】 
+freego_order_user_count  【无问题，不需要处理】    
+o2o_order_user_count  【无问题，不需要处理】    
+order_user_count  【无问题，不需要处理】   
+recall_user_count  【无问题，不需要处理】   
+predict_loss_user_count    【需要处理】    
+valuable_user_count  【无问题，不需要处理】  
+re_order_user_count   【无问题，不需要处理】  
+first_order_user_count  【需要处理】    
+active_user_count   【无问题，不需要处理】  
+new_user_count   【无问题，不需要处理】  
+loss_user_stage_count   【需要处理】  
+silence_user_stage_count  【需要处理】  
+grow_user_stage_count  【需要处理】  
+new_user_stage_count  【需要处理】  
+total_user_count  【无问题，不需要处理】
+
+
+3、异常的指标修复已经数据
+3.1 需要处理的指标
+predict_loss_user_count    【需要处理】    
+first_order_user_count  【需要处理】    
+
+loss_user_stage_count   【需要处理】  
+silence_user_stage_count  【需要处理】  
+grow_user_stage_count  【需要处理】  
+new_user_stage_count  【需要处理】  
+total_user_count  【无问题，不需要处理】
+3.2 涉及的数据以及修复日期
+[参考: ⁢⁤⁣‬‬⁤⁤‍‌‬⁣⁢‌​‌‬⁢⁡⁢‌​​⁤‍‬⁢⁢⁤⁢⁣‍‬⁢‌⁣​⁣​⁢‍​‌⁣​⁤重百异常数据修复-20230630 - 飞书云文档 https://duodian.feishu.cn/sheets/D9TPsLJojhGGZotO1sCctBZrnjd?sheet=ITbCXa ]
+
+3.3、异常修复的SQL
+http://idb2.db.dmall.com/#/procedure/mysql_detail/724945
+``` 
+UPDATE vender_metric_data SET metric_value = 16923 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'new_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 2068972 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'grow_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 754214 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'silence_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 13101987 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'loss_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 41873 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'predict_loss_user_count'; 
+UPDATE vender_metric_data SET metric_value = 6437 WHERE `vender_id` = 69 AND `calculate_date` = '2023-06-30' AND `metric_code` = 'first_order_user_count'; 
+
+
+UPDATE vender_metric_data SET metric_value = 18297 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'new_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 2061585 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'grow_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 774935 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'silence_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 13096385 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'loss_user_stage_count'; 
+UPDATE vender_metric_data SET metric_value = 40423 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'predict_loss_user_count'; 
+UPDATE vender_metric_data SET metric_value = 6783 WHERE `vender_id` = 69 AND `calculate_date` = '2023-07-01' AND `metric_code` = 'first_order_user_count';
+
+``` 
+END 
