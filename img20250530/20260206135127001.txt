@@ -1,0 +1,59 @@
+# 重百2月数据：充值成功-团购-实体卡
+
+# 1、核对2.15数据：ERP<数据库
+
+```sql
+数据库相关查询SQL
+select sum( `denomination`) ,count(1)
+from `card_sale_record`
+where sell_time >= '2021-02-15' and `sell_time` < '2021-02-16'
+	and yn =1 and coid=10
+	and `recharge_status` =2 and `receipt_status` =2
+	and `sale_source` in(4,5,98)
+	and `card_type` =2;
+
+查询详细
+select `card_outer_no` , `sell_big_order_no` , `sell_time` ,recharge_status,receipt_status,aftersale_date
+from `card_sale_record`
+where sell_time >= '2021-02-15' and `sell_time` < '2021-02-16'
+	and yn =1 and coid=10
+	and `recharge_status` =2 and `receipt_status` =2
+	and `sale_source` in(4,5,98)
+	and `card_type` =2
+ORDER BY `sell_time` DESC ,card_outer_no ASC ;
+
+-- 
+数据库条数： 563 +  ERP条数： 561 
+数据库比ERP多2条。
+【第一次核对】
+第8页第12条， 大客户 00020210215001021226   2021-02-15 12:20:40  对应应该 362  实际查询结果 364
+第8页第13条， 大客户 00020210215001021224   2021-02-15 12:06:43  对应应该 363  实际查询结果 365
+【第二次核对】
+定位大客户 00020210215001021228 数据库 200，ERP 198，相差两条
+ERP中缺失的两条数据 0056875300,0056875400
+```
+
+# 2、核对2.6数据：ERP>数据库
+
+```sql
+ERP 3605条、数据库 3566 条。ERP比数据库多 39 条。
+初步定位是：没有卡号的数据导致。
+【数据核对】
+292行一致
+425行一致
+2021-02-06 16:40:27  数据库 688  ERP  688
+2021-02-06 16:19:05  数据库 786  ERP  774
+2021-02-06 16:16:51  数据库 801 ERP  801
+2021-02-06 16:15:53  数据库 1105 ERP 1105 
+2021-02-06 15:16:20 数据库 1606 ERP 1606
+数据库 ERP 
+数据库 ERP 
+数据库 ERP 
+2021-02-06 08:37:41(最后一条) 数据库 3566 ERP 3559 【这里，数据库比ERP多7条】
+原因是：以1000000000194083数据，实际销售时间为：2021-02-05 09:30:42，但ERP中为 2021-02-06 00:00:00。bug已反馈。具体截图如下。
+
+实际居然是 
+然后：2021-02-06 00:00:00 ERP中 多了 46条。数据库中没有。【这里，ERP比数据库多46条】
+
+最后：3605 - 46 + 7 = 3566
+```
