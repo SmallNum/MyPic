@@ -1,0 +1,74 @@
+# 1、查询最终的180天指标信息（新百电器）
+
+```
+WITH rfm AS
+  (SELECT data_id,
+          vender_id,
+          user_id,
+          rfm_layer,
+          last_rfm_layer,
+          silent_lost_risk_capacity
+   FROM ddw_medusa.vender_user_rfm_overview
+   WHERE dt='20230209'
+     AND data_type='all'
+     AND vender_id in (57))
+SELECT vup.vender_id,
+       vup.user_id,
+       vup.join_time,
+       vup.order_count,
+       vup.rec_180_order_count,
+       vup.rec_180_sum_order_price
+FROM data_profile.dp_vender_user_profile_v1 vup
+LEFT JOIN rfm ON vup.data_id = rfm.data_id
+WHERE vup.vender_id in (57)
+AND vup.join_time<='2023-02-09 23:59:59'
+AND vup.rec_180_order_count>= 2
+AND vup.rec_180_sum_order_price>= 1400000;
+```
+
+# 2、查询最终的180天指标信息（新百连超）
+
+```
+WITH rfm AS
+  (SELECT data_id,
+          vender_id,
+          user_id,
+          rfm_layer,
+          last_rfm_layer,
+          silent_lost_risk_capacity
+   FROM ddw_medusa.vender_user_rfm_overview
+   WHERE dt='20230209'
+     AND data_type='all'
+     AND vender_id in ($currentVendorId))
+SELECT vup.vender_id,
+       vup.user_id,
+       vup.join_time,
+       rfm.rfm_layer,
+       rfm.last_rfm_layer,
+       rfm.silent_lost_risk_capacity,
+       vup.order_count,
+       vup.store_ids,
+       vup.last_use_time,
+       vup.ex_virtual_first_complete_order_time,
+       vup.ex_virtual_last_complete_order_time,
+       vup.rec_90_order_count,
+       vup.rec_90_sum_order_price,
+       vup.last_o2o_complete_order_time,
+       vup.last_global_complete_order_time,
+       vup.last_freego_complete_order_time,
+       vup.last_scan_complete_order_time
+FROM data_profile.dp_vender_user_profile_v1 vup
+LEFT JOIN rfm ON vup.data_id = rfm.data_id
+WHERE vup.vender_id in (58)
+AND vup.join_time<='2023-02-09 23:59:59'
+AND vup.rec_90_order_count>= 1
+AND vup.rec_90_sum_order_price>= 1500000;
+```
+
+# 3、订单数据来源
+```
+表：dmall_order.wm_order
+字段：order_price（实付金额）
+```
+
+# END
