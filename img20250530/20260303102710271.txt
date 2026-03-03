@@ -1,0 +1,126 @@
+
+# 1、基础概念和定义
+## 1.1 任务类型和对应关系
+```
+SIYU_ADD_WORK_WECHAT(17, "私域-加企业微信任务", SiyuAddWorkWechatTaskEntity.class),  
+-- 对应私域的内容：isAddC（加C）
+
+SIYU_ADD_OFFICIAL_ACCOUNTS(18, "私域-添加公众号任务", SiyuAddOfficialAccountTaskEntity.class),   
+-- 对应私域的内容：isFocusOnMp（关注微信公众号）。主要包含：appId
+
+SIYU_INVITE_FRIEND(19, "私域-邀请好友任务", SiyuInviteFriendTaskEntity.class),
+
+```
+
+## 1.2 用户任务完成记录常用字段
+```
+finishCount
+canFinishCount
+receiveCount
+```
+
+# 2、查询问题常用内容
+
+## 2.1、常用SQL
+```
+-- 查询用户任务完成信息
+SELECT * FROM user_task_035
+WHERE `user_id` = 97431843 and `task_id` = 18721
+
+SELECT * FROM user_task_038 
+WHERE `user_id` = 53942054  and `task_id` = 22841;
+
+-- 查询任务配置信息
+select *
+from task 
+WHERE  `show_type` = 7401 and type = 18
+-- WHERE `business_id` = 161 and `type` = 18 and `status` = 20 and `yn` = 1 and `template_id` = 'wx18a63a145254d9c9';
+
+SELECT * FROM `task` 
+WHERE id in (22841,23481);
+
+-- 查询邀请好友记录
+SELECT * FROM user_share_detail_038
+WHERE `user_id` = 53942054 AND shared_user_id = 97431843
+ORDER BY id desc ;
+
+```
+
+## 2.2、主要接口日志关键字
+```
+
+
+0、日志命令
+
+grep -n -2 'SiyuAddWorkWechatMessageListener' task_center_server.log --color=auto
+grep -n -2 'SiyuAddOfficialAccountMessageListener' task_center_server.log --color=auto
+
+1、任务列表
+
+2、完成任务MQ
+
+2.1 关注微信公众号
+"SiyuAddOfficialAccountMessageListener监听私域-加公众号MQ, "
+
+2.2 加企业微信
+"SiyuAddWorkWechatMessageListener监听私域-加企业微信MQ, "
+
+2.3 邀请好友
+"SiyuInviteFriendMessageListener-"
+
+3、查询私域的任务是否完成接口
+"SignTaskApiRpcServiceImpl-"
+"SignTaskApiRpcServiceImpl-isAddC-"
+"SignTaskApiRpcServiceImpl-isFocusOnMp-" 
+
+```
+
+# 3、问题跟进（测试环境）
+
+## 3.1  关注公众号：完成后任务变为已完成，不提示领奖
+
+```sql
+
+1、问题信息
+活动ID：7401 
+任务ID：18761（添加公众号任务 + 18 ）
+
+2、问题原因
+原因： 任务没有完成 
+
+3、查询问题常用内容
+
+3.1 日志搜索关键字：
+"加公众号MQ"
+"97431843" AND "18761"  
+"queryTaskList"  
+
+```
+
+## 3.2 邹子建：修改任务数据，但是没生效
+
+```sql
+1、问题信息
+任务ID：18721（私域-加企业微信任务 + 17）  
+
+2、日志搜索关键字以及结果
+2.1 关键字
+"97431843" AND "18721"  
+2.2 结果
+2021-12-13 16:40:48.694 [DubboServerHandler-10.13.106.12:20880-thread-200] [com.dmall.task.center.service.facade.TaskCenterFacadeImpl] - [b521384e62ba4b5aade39f0b41818d8f] - [f022f5621a910675] - MethodExit(AOP) [ TaskCenterFacadeImpl.queryTaskList ] 1639384848596, Response: {"code":"0000","msg":"SUCCESS","result":{"count":2,"list":[{"beginTime":1638431451000,"businessId":161,"canFinishCount":1,"collectNeed":"0","collectStatus":"0","description":"","endTime":1640966399000,"finishCount":1,"finishDataObj":{"awardName":"自助服务-北京物美发放-即将过期","awardType":4},"id":18721,"limitType":3,"name":"559355935593","offerPrizeType":1,"receiveCount":1,"remark":"","sequence":1,"showImg":"","showType":7401,"targetUrl":"https://test-bucket.dmallcdn.com/FjObgYhNo11-Y0eVWdZku6-E6jmu","type":17},{"beginTime":1635925833000,"businessId":161,"canFinishCount":1,"collectNeed":"0","collectStatus":"0","description":"","endTime":1640966399000,"finishCount":0,"finishDataObj":{"appId":"wx18a63a145254d9c9","awardName":"自助服务-北京物美发放-即将过期","awardType":4},"id":18761,"limitType":3,"name":"55935593222","offerPrizeType":1,"receiveCount":0,"remark":"","sequence":1,"showImg":"","showType":7401,"targetUrl":"https://mp.weixin.qq.com/s/squuxq0RZtALWuR-a2_nnw","type":18}],"pageCount":1,"pageIndex":1,"pageSize":10},"success":true}, Time: 98 ms，Param->context({"platform":"WEAPP","token":"08d5ce51-593d-4b5e-ad66-4d07714a6e70","userId":97431843}), taskReq({"maxPageNum":1,"maxShowPageNum":10,"pageIndex":0,"pageNum":1,"pageSize":10,"showPageNumList":[],"showType":7401,"status":20,"totalSize":0,"userId":97431843,"vendorId":"85"})
+
+```
+
+## 3.3 邀请好友任务：进度不变
+
+```sql
+1、问题信息 
+任务ID：22601 
+用户ID：53942054%256 = 38 
+
+2、查询问题常用内容以及结果
+2021-12-20 10:54:03.655 [ConsumeMessageThread_5] [com.dmall.task.center.service.mq.SiyuInviteFriendMessageListener] - [d78e23f06ed0494982c1f288336cdcda] - [92675137d3d0adff] - SiyuInviteFriendMessageListener-checkShareLimit-taskConfig={"activityId":"12440","awardName":"自助服务-北京物美发放-即将过期","awardType":4,"helpLimitIntervalNum":1,"helpLimitNum":1,"helpLimitType":2,"id":8176,"pandoraId":"12440","progressNum":2,"receiveParam":"{\"taskId\":\"12440\"}","storageNums":111,"taskMessageSwitch":0}
+
+2021-12-20 10:54:03.647 [ConsumeMessageThread_5] [com.dmall.task.center.service.mq.SiyuInviteFriendMessageListener] - [d78e23f06ed0494982c1f288336cdcda] - [92675137d3d0adff] - SiyuInviteFriendMessageListener-onMessage-消息体：msg={"activeId":8921,"inviteUserId":53942054,"shareUserId":97431843,"taskId":22161}
+
+```
