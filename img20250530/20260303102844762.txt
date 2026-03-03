@@ -1,0 +1,63 @@
+# 0、杨少亮反馈的问题信息
+
+[INFO ] 2022-07-26 03:01:07.128 [pool-15-thread-2] [com.dmall.ard.logcontext.plugin.dubbo.DubboTransformer] [] - [c55256b05d9e49d492c5fba63ea5f053] - [DubboMethod]:SeparateUserVendorApi.vendorWithdrawStatusQuery [Result]:{"code":"0","msg":"SUCCESS","result":{"thirdWithdrawNo":"EMSSJUJ2207260195719915515174912","withdrawStatus":"4","withAmt":10164607},"success":true},耗时:118ms
+
+
+'WD2022072607010437702610',
+'WD2022072607010447102611',
+'WD2022072609010436502613',
+'WD2022072609010428202612'
+
+# 1、查询数据与日志
+-- 提现失败的记录
+SELECT * FROM withdraw_record
+WHERE `with_status` = 4
+ORDER BY `id` DESC 
+
+-- 提现Job的执行代码以及日志
+grep -n -5 'WithdrawFileAction' separate.log --color=auto
+grep -n -0 'WithdrawFileAction-buldEntity-构建对象' separate.log --color=auto
+
+日志摘录：
+-- 提现结果文件名信息。文件名规则： 812 + 日期 20220871  + .ZIP 
+221:[INFO] 2022-07-27 09:00:10.985 [WithdrawResultFileSyncJob-108321-TaskThread-1][com.dmall.pay.channel.action.verify.WithdrawFileAction:?] - WithdrawFileAction-getAndUnZipFile-sftpResult={"code":"000000","downloadFile":"J000334000000008122022072701.ZIP","fileName":"J000334000000008122022072701.ZIP","ftpPath":"J000334000000008122022072701.ZIP","msg":"FTP上传成功","success":true} 
+
+
+# 2、查询高泳的交易状态接口
+https://amp.dmall.com/service/show/dubServerRelation?projectId=8841 
+
+com.dmall.pay.channel.sdk.api.separate.vendor.SeparateUserVendorApi.vendorTransactionQuery
+
+入参：
+
+{}
+
+{
+  "platformMerchantNo": "J00033400000000",
+  "userId": "J00033400000051",
+  "oriUserSsn": "EMSSJUJ2207270196187997916430336",
+  "userTransDate": "2022-07-27 10:33:34"
+}
+
+出参：
+{
+  "result": {
+    "userSsn": "EMSSJUJ2207270196187997916430336",
+    "repSsn": "J0003340000000020220727103647333Gc2Y1y6J",
+    "state": "02",
+    "class": "com.dmall.pay.channel.sdk.api.separate.vendor.domain.VendorTransactionQueryResponse"
+  },
+  "msg": "SUCCESS",
+  "code": "0",
+  "success": true,
+  "class": "com.dmall.pay.common.sdk.domain.ServiceResponse"
+}
+
+# 3、最终的反馈：中信那边的问题
+
+![](https://raw.githubusercontent.com/SmallNum/MyPic/master/img/202207271507952.jpg)
+
+# 4、参考资料：
+[参考: 【中信对接】多点与中信对接说明 - 飞书云文档 https://duodian.feishu.cn/docs/doccnavGvSFwHj5fQYQsH6K6rAc#NM03UI ]
+[参考: 【中信清分系统接口调试】日志关键字+测试入参数据 - 飞书云文档 https://duodian.feishu.cn/docs/doccnydUoaYtRwSAH8JOslSwfdc# ]
+
