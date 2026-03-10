@@ -1,0 +1,59 @@
+-- 1、非新人数据
+WITH base_data_1 AS (
+  SELECT
+    data_id AS user_id_1
+  FROM
+    data_profile.dp_user_new_user
+  where
+    o2o_global_sell_new_user_pay = 1
+),
+-- 2、令牌未过期数据
+base_data_2 AS (
+  SELECT
+    cus_id AS user_id_1
+  FROM
+    dmall_token.token_user
+  where
+    token_origin_id = 87
+    and created < "2017-03-08 00:00:00"
+    and end_time > "2023-02-21 00:00:00"
+),
+-- 3、合并结果
+merge_result AS (
+  SELECT
+    user_id_1
+  FROM
+    base_data_1
+  UNION ALL
+  SELECT
+    user_id_1
+  FROM
+    base_data_2
+),
+-- 4、去除合并结果
+save_result AS (
+  select
+    user_id
+  FROM
+    ads_data.user_profile
+  where
+    register_time < '2017-03-08 00:00:00'
+    AND not EXISTS(
+      select
+        user_id_1
+      FROM
+        merge_result
+      where
+        user_profile.user_id = merge_result.user_id_1
+    )
+) -- 写入数据
+INSERT OVERWRITE TABLE dmall_medusa.new_user_tag_token_user_info_export
+SELECT
+  /*+ COALESCE(10) */
+  user_id,
+  row_number() over (
+    order by
+      user_id asc
+  ) as nums
+FROM
+  save_result;
