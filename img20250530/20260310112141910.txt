@@ -1,0 +1,91 @@
+# 地推本地自测-寿康
+
+# 1、查询创建的任务信息：
+
+寿康的商家 ID： 22401
+
+```
+
+1、获取商家ID (任务ID 是：2561 )
+SELECT * FROM `employee_task_store`
+WHERE `task_id` = 2561
+LIMIT 20;
+
+2、获取链接信息（地推员：2513841 + 刘清）
+SELECT * FROM `employee_task_link`
+WHERE `vender_id` = 22401
+LIMIT 20;
+
+```
+
+# 2、造数据-地推员通过接口领取任务：
+
+```
+
+通过 Dubbo 接口调用：
+com.dmall.code.dubbo.service.v3.MarketEmployeeTaskDubboService#getEmployeeTaskLinkList
+
+入参：2513841
+
+结果：通过 SQL 查数据就行：
+
+SELECT * FROM `employee_task_link`
+WHERE `vender_id` = 22401 AND `erp_user_id` = 2513841
+ORDER BY `id` DESC 
+LIMIT 20;
+```
+
+# 3、测试-调用售后使用的接口
+
+接口：com.dmall.market.dubbo.MarketPlusRemoteService#getTaskInfo
+
+```
+1、获取可用的 tdc：
+
+SELECT * FROM `employee_task_link`
+WHERE `vender_id` = 22401 AND `erp_user_id` = 2513841 AND `task_id` = 2561
+ORDER BY `id` DESC 
+LIMIT 20;
+
+2、通过售后接口调用（Dubbo 调用）
+
+2.1 新的 付费会员任务 tdc 
+得到：65.21005881-2561-2513841.349921.0 
+
+返回结果中只有字段： taskPropertyInterger ，  taskProperty 被废除
+
+2.2 老的任务 tdc 
+任务ID： 2441， TDC 是：65.21005881-2441-2513841.350001.0
+
+返回结果中有字段： taskPropertyInterger + taskProperty
+```
+
+# 4、测试-调用给郑智伟的接口
+
+接口：com.dmall.market.dubbo.MarketPlusRemoteService#queryLastBindTrackInfo
+
+```
+1、造数据，绑定数据
+SELECT * FROM `user_scan_record`
+WHERE `mkt_user_id` = 2513841
+ORDER BY `id` DESC 
+LIMIT 20;
+
+-- 造数据：绑定时间 + 任务ID + 地推员ID 等
+INSERT INTO `user_scan_record` (`scan_minute`,`scan_time`,`uuid`,`tdc`,`user_id`,`bind_time`,`expire_time`,`task_id`,`mkt_user_id`,`mkt_vender_id`,`mkt_store_id`,`yn`,`created`,`modified`) VALUES (202409141421,"2024-09-14 14:21:10","CA2FFFE6F3000002841BE287649015471677575899952","65.21005881-2561-2513841.349921.0",98460402,"2024-09-14 14:21:10","2024-09-15 14:21:10",2561,2513841,22401,867921,1,"2023-03-16 15:16:29",null);
+
+2、接口调用入参：
+{
+  "vendorId": 22401,
+  "userId": 98460402,
+  "taskProperty": 3
+}
+
+测试结果：
+
+{"msg":"success","code":"0000","data":{"erpUserId":2513841,"scanRecordExpireTime":"2024-09-15 14:21:10","scanUserId":98460402,"venderId":22401,"storeId":867921,"class":"com.dmall.market.dubbo.vo.EmployeeTaskTrackVo","taskId":2561,"taskPropertyInterger":3,"scanRecordCreated":"2023-03-16 15:16:29"},"success":true,"class":"com.dmall.data.model.resp.RespResult"}
+
+END 
+```
+
+# END
