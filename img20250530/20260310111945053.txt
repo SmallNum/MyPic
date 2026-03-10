@@ -1,0 +1,28 @@
+1、
+-- 券码：SJXJ100452501000000000264 
+SELECT * 
+FROM `user_paid_coupon_order`
+WHERE `order_id` = 20001324100260345
+LIMIT 20;
+
+2、定时任务执行：
+
+3、定时任务的日志：
+grep -n -0 'PaidCouponExpiredButUsedRecoverTask - execute -' *.log --color=auto
+
+grep -n -0 'sendCouponExpiredButUsedRecoverMQ' *.log --color=auto
+
+[root@dmall-point-mall-partner-gz01a-blue-6bfdb96769-4z56f 10.30.249.147:8080]# grep -n -0 'sendCouponExpiredButUsedRecoverMQ' *.log --color=auto
+error.log:27:[ERROR] 2025-01-21 00:08:03.073 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1265] [] - 过期退任务：扫到 1 个待过期券包订单，实际发送退款消息成功 0 个，失败 0 个，之前就已经发过 0 个退款消息，到过期退时间后是券状态不是过期的有 1 个
+--
+partner.log:160:[WARN ] 2025-01-21 00:08:03.066 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1210] [] - sendCouponExpiredButUsedRecoverMQ 有券不是过期状态，略过 userId 99306845 couponCode SJXJ100452501000000000264 statusCode 2
+partner.log:161:[WARN ] 2025-01-21 00:08:03.066 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1218] [] - 跳过过期退：有券未过期，不能直接退款作废，略过 orderId 20001324100260345 itemOrderId 800010780665463782613619740 userId 99306845 couponCode SJXJ100452501000000000264 statusCode 2!=8
+--
+statistics_data.log:2:[INFO ] 2025-01-21 00:08:03.036 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1177] [] - sendCouponExpiredButUsedRecoverMQ lastId 0 usedExpiredPaidCouponList size 1
+statistics_data.log:3:[INFO ] 2025-01-21 00:08:03.072 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1183] [] - sendCouponExpiredButUsedRecoverMQ lastId 34481 usedExpiredPaidCouponList is empty
+statistics_data.log:4:[ERROR] 2025-01-21 00:08:03.073 [PaidCouponExpiredButUsedRecoverTask-321321-TaskThread-1] [com.dmall.pointmall.service.paidcoupon.impl.UserPaidCouponOrderServiceImpl#sendCouponExpiredButUsedRecoverMQ@1265] [] - 过期退任务：扫到 1 个待过期券包订单，实际发送退款消息成功 0 个，失败 0 个，之前就已经发过 0 个退款消息，到过期退时间后是券状态不是过期的有 1 个
+
+4、外卖中台 RPC 接口调用的日志
+grep -n -5 'paidCouponRecoverRefund-' *.log --color=auto
+
+END 
